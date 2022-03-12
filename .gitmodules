@@ -1,0 +1,24 @@
+[submodule "ecdsalib"]
+	path = ecdsalib
+	url = https://git.cryptech.is/core/math/ecdsalib
+[submodule "ecdsa256"]
+	path = ecdsa256
+	url = https://git.cryptech.is/core/pkey/ecdsa256
+[submodule "ecdsa384"]
+	path = ecdsa384
+	url = https://git.cryptech.is/core/pkey/ecdsa384
+[submodule "lib"]
+	path = lib
+	url = https://git.cryptech.is/core/lib
+[submodule "edalize/cryptech/cryptech_lib"]
+	path = edalize/cryptech/cryptech_lib
+	url = https://github.com/bat52/cryptech_lib.git
+[submodule "cryptech/cryptech_lib"]
+	path = cryptech/cryptech_lib
+	url = https://github.com/bat52/cryptech_lib.git
+[submodule "cryptech/cryptech_ecdsalib"]
+	path = cryptech/cryptech_ecdsalib
+	url = https://github.com/bat52/cryptech_ecdsalib.git
+[submodule "cryptech/cryptech_ecdsa256"]
+	path = cryptech/cryptech_ecdsa256
+	url = https://github.com/bat52/cryptech_ecdsa256.git
