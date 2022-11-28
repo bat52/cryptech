@@ -15,10 +15,10 @@
 	url = https://github.com/bat52/cryptech_lib.git
 [submodule "cryptech/cryptech_lib"]
 	path = cryptech/cryptech_lib
-	url = https://github.com/bat52/cryptech_lib.git
+	url = https://github.com/bat52/cryptech_lib
 [submodule "cryptech/cryptech_ecdsalib"]
 	path = cryptech/cryptech_ecdsalib
-	url = https://github.com/bat52/cryptech_ecdsalib.git
+	url = https://github.com/bat52/cryptech_ecdsalib
 [submodule "cryptech/cryptech_ecdsa256"]
 	path = cryptech/cryptech_ecdsa256
-	url = https://github.com/bat52/cryptech_ecdsa256.git
+	url = https://github.com/bat52/cryptech_ecdsa256
