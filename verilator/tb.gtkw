@@ -1,0 +1,31 @@
+[*]
+[*] GTKWave Analyzer v3.3.104 (w)1999-2020 BSI
+[*] Sun Dec 11 23:57:54 2022
+[*]
+[dumpfile] "/media/marco/DATA/programming/rtl/cryptech/edalize/work_verilator/dump.vcd"
+[dumpfile_mtime] "Sun Dec 11 23:56:21 2022"
+[dumpfile_size] 942720
+[savefile] "/media/marco/DATA/programming/rtl/cryptech/verilator/tb.gtkw"
+[timestart] 0
+[size] 1526 836
+[pos] -39 -39
+*-1.023803 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
+[treeopen] TOP.
+[treeopen] TOP.ecdsa256_wrapper.
+[treeopen] TOP.ecdsa256_wrapper.ecdsa256_inst.
+[sst_width] 233
+[signals_width] 158
+[sst_expanded] 1
+[sst_vpaned_height] 226
+@28
+TOP.clk
+TOP.reset_n
+TOP.cs
+TOP.we
+@22
+TOP.address[5:0]
+TOP.read_data[31:0]
+@23
+TOP.write_data[31:0]
+[pattern_trace] 1
+[pattern_trace] 0
