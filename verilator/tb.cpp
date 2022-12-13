@@ -18,6 +18,25 @@ vluint64_t sim_time = 0;
 #define ADDR_STATUS     9   // {valid, ready}
 #define ADDR_DUMMY      15  // don't care
 
+// Y = k*X
+// -------
+// K-coefs
+// 0x0080 | K0 
+// 0x0084 | K1 
+// ... 
+// 0x009C | K7
+//
+// X-coefs
+// 0x00A0 | X0 
+// 0x00A4 | X1 
+// ... 
+// 0x00BC | X7 
+//
+// Y-coefs// 0x00C0 | Y0 
+// 0x00C4 | Y1 
+// ... 
+// 0x00DC | Y7
+
 // Bitfields
 // #define CONTROL_INIT_BIT  = 0; -- not used
 #define CONTROL_NEXT_BIT  = 1;
