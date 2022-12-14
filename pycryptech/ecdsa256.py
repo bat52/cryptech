@@ -5,13 +5,15 @@ import argparse
 
 from ecdsa256_edalize import simulate, verilate, synth_trellis
 from ecdsa256_yosys import synth_yosys
+from ecdsa256_pyverilator import pyverilate
 
 def cli(argv=[]):
     parser = argparse.ArgumentParser(description='ECDSA256 Command Line Interface')
     # register format options
     
     # bare tools    
-    parser.add_argument("-synth",        "--synth"        , help="Synthesize with yosys", action='store_true')  
+    parser.add_argument("-pyv",          "--pyverilator"  , help="Simulate with pyverilator.", action='store_true')  
+    parser.add_argument("-synth",        "--synth"        , help="Synthesize with yosys", action='store_true')      
 
     # edalize
     parser.add_argument("-sim",          "--simulate"     , help="Simulate with icarus verilog/edalize", action='store_true' )     
@@ -29,6 +31,8 @@ def main(argv=[]):
         simulate()
     if p.verilate:
         verilate()
+    if p.pyverilator:
+        pyverilate()
     
     # synthesis
     if p.synth:

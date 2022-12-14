@@ -5,7 +5,7 @@ SRC_DIR_LIST = [
     '../cryptech/cryptech_lib/multiword',
     '../cryptech/cryptech_lib/lowlevel/generic',
     '../cryptech/cryptech_lib/modular',
-    '../cryptech/cryptech_ecdsalib/rtl',
+    '../cryptech/cryptech_ecdsalib/rtl/modular',
     '../cryptech/cryptech_ecdsa256/rtl',
 ]
 
