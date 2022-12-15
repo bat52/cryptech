@@ -124,7 +124,7 @@ class pyverilator_wrapper(object):
             readval = self.reg_read(baseaddr + 4*idx)
             
             if not(readval==val[idx]):
-                print('Error! Index: %d, Read: 0x%x, Expected: 0x%x' % (idx, readval, val[idx]))
+                print('Error! Index: %d, Read: 0x%08x, Expected: 0x%08x' % (idx, readval, val[idx]))
 
             if assert_en:
                 assert(readval==val[idx])
@@ -162,7 +162,10 @@ def test_ecdsa_point_mul(tb,tc):
 
     # write input
     print('Writing K...')
-    tb.write_multi_word(ecdsa256regAddr.K, ecdsaTc.k)
+    tb.write_multi_word(ecdsa256regAddr.K, tc.k)
+
+    print('Checking K...')
+    tb.compare_multi_word(ecdsa256regAddr.K, tc.k)
 
     print('Starting multiplication...')
     tb.reg_write(ecdsa256regAddr.CONTROL,2)
@@ -177,7 +180,7 @@ def test_ecdsa_point_mul(tb,tc):
         niterations += 1
     print('Done!')
 
-    tb.reg_write(ecdsa256regAddr.CONTROL,0)
+    # tb.reg_write(ecdsa256regAddr.CONTROL,0)
 
     print('Checking multiplication result QX...')
     tb.compare_multi_word(ecdsa256regAddr.QX,tc.qx)
