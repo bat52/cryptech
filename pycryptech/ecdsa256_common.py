@@ -1,5 +1,7 @@
 #!/usr/bin/python3
 
+from enum import IntEnum
+
 SRC_DIR_LIST = [
     '../cryptech/cryptech_lib/memory',
     '../cryptech/cryptech_lib/multiword',
@@ -31,3 +33,19 @@ TB_VERILATOR_LIST = [
 SIMNAME    = 'ecdsa256'
 TBTOPLEVEL = 'tb_curve_multiplier_256'
 TOPLEVEL   = 'ecdsa256_wrapper'
+
+## Registers ##
+
+CORE_NAME0   = 0x65636473 # "ecds"
+CORE_NAME1   = 0x61323536 # "a256"
+CORE_VERSION = 0x302E3230 # "0.20"
+class ecdsa256regAddr(IntEnum):
+    NAME0 = 0
+    NAME1 = 1
+    VERSION = 2
+    CONTROL = 8
+    STATUS = 9
+    DUMMY  = 15
+    K  = 0b1_00_000 
+    QX = 0b1_01_000
+    QY = 0b1_10_000
