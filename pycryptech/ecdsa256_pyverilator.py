@@ -115,13 +115,15 @@ class pyverilator_wrapper(object):
     def write_multi_word(self, baseaddr = 0, val = []):
         # write inputs
         for idx in range(len(val)):
-            self.reg_write(baseaddr + 4*idx, val[idx])
+            addr = baseaddr + idx
+            # print("IDX: %d, ADDR: 0x%x, VAL: 0x%d" % (idx, addr, val[idx]))
+            self.reg_write(addr, val[idx])
         pass
 
     def compare_multi_word(self, baseaddr = 0, val = [], assert_en = False):
         # read inputs
         for idx in range(len(val)):
-            readval = self.reg_read(baseaddr + 4*idx)
+            readval = self.reg_read(baseaddr + idx)
             
             if not(readval==val[idx]):
                 print('Error! Index: %d, Read: 0x%08x, Expected: 0x%08x' % (idx, readval, val[idx]))
@@ -168,7 +170,7 @@ def test_ecdsa_point_mul(tb,tc):
     tb.compare_multi_word(ecdsa256regAddr.K, tc.k)
 
     print('Starting multiplication...')
-    tb.reg_write(ecdsa256regAddr.CONTROL,2)
+    tb.reg_write(ecdsa256regAddr.CONTROL,ecdsa256Control.en)
 
     print('Polling for multiplication done...')
     status = 1
@@ -178,9 +180,9 @@ def test_ecdsa_point_mul(tb,tc):
         if (niterations % (ECDSA256_NCYCLES_TIMEOUT/10)) == 0:
             print('#%d, STATUS: %d' % (niterations,status) )
         niterations += 1
-    print('Done!')
 
-    # tb.reg_write(ecdsa256regAddr.CONTROL,0)
+    print('#%d, STATUS: %d' % (niterations,status) )        
+    print('Done!')
 
     print('Checking multiplication result QX...')
     tb.compare_multi_word(ecdsa256regAddr.QX,tc.qx)
@@ -188,6 +190,7 @@ def test_ecdsa_point_mul(tb,tc):
     tb.compare_multi_word(ecdsa256regAddr.QY,tc.qy)
     print('Done!')
 
+    tb.reg_write(ecdsa256regAddr.CONTROL,0)
     pass
 
 def pyverilate():
@@ -200,6 +203,26 @@ def pyverilate():
                              command_args = args)
 
     test_read_regs(tb)
+
+    print("1. Q1 = d1 * G...")
     test_ecdsa_point_mul(tb,ECDSA_P256_NSA_TC1)
+    
+    print("2. R = k * G...")
+    test_ecdsa_point_mul(tb,ECDSA_P256_NSA_TC2)
+    
+    print("3. Q2 = d2 * G...")
+    test_ecdsa_point_mul(tb,ECDSA_P256_RANDOM)
+    
+    print("4. O = n * G...")
+    test_ecdsa_point_mul(tb,ECDSA_P256_O)
+    
+    print("5. G = (n + 1) * G...")
+    test_ecdsa_point_mul(tb,ECDSA_P256_G)
+
+    print("6. H = 2 * G...")
+    test_ecdsa_point_mul(tb,ECDSA_P256_H)
+    
+    print("7. H = (n + 2) * G...")
+    test_ecdsa_point_mul(tb,ECDSA_P256_H2)
 
     pass
