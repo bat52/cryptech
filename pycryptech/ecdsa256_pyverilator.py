@@ -14,7 +14,7 @@ ECDSA256_NCYCLES_TIMEOUT=1e6
 class pyverilator_wrapper(object):
     sim = None
 
-    def __init__(self, fname='', verilog_path=[], command_args = [], wave_en = False):
+    def __init__(self, fname='', verilog_path=[], command_args = [], dump_en = False):
 
         # rename to .v, if .sv
         if not os.path.isfile(fname):
@@ -35,7 +35,7 @@ class pyverilator_wrapper(object):
         self.sim = pyverilator.PyVerilator.build(ofname, 
                                                  verilog_path=verilog_path, 
                                                  command_args=command_args) # command_args not passed to verilator with pyverilator 0.7.0
-        if wave_en:
+        if dump_en:
             self.view_waves()
 
         self.reset_release()
@@ -193,14 +193,15 @@ def test_ecdsa_point_mul(tb,tc):
     tb.reg_write(ecdsa256regAddr.CONTROL,0)
     pass
 
-def pyverilate():
+def pyverilate(dump_en = False):
     topfname = os.path.join(SRC_DIR_LIST[-1], TOPLEVEL+'.v')
     print(topfname)
 
     args = ["-Wno-TIMESCALEMOD", "-Wno-WIDTH"]
     tb = pyverilator_wrapper(fname = topfname,
                              verilog_path = SRC_DIR_LIST+INC_DIR_LIST,
-                             command_args = args)
+                             command_args = args,
+                             dump_en=dump_en)
 
     test_read_regs(tb)
 

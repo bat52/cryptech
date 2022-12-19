@@ -20,6 +20,9 @@ def cli(argv=[]):
     parser.add_argument("-v",            "--verilate"     , help="Simulate with verilator/edalize", action='store_true' )
     parser.add_argument("-synth_trellis","--synth_trellis", help="Synthesize with trellis/edalize", action='store_true') 
 
+    # simulation options
+    parser.add_argument("-den",          "--dump_en"      , help="Dump waveforms in simulation.", action='store_true' )
+
     p = parser.parse_args(argv)
     return p
 
@@ -30,11 +33,11 @@ def main(argv=[]):
 
     # simulation
     if p.simulate:
-        simulate()
+        simulate(dump_en=p.dump_en)
     if p.verilate:
-        verilate()
+        verilate(dump_en=p.dump_en)
     if p.pyverilator:
-        pyverilate()
+        pyverilate(dump_en=p.dump_en)
     
     # synthesis
     if p.synth:
