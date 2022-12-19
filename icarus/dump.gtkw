@@ -1,0 +1,40 @@
+[*]
+[*] GTKWave Analyzer v3.3.104 (w)1999-2020 BSI
+[*] Fri Dec 16 09:09:36 2022
+[*]
+[dumpfile] "/media/marco/DATA/programming/rtl/cryptech/pycryptech/work_icarus/dump.vcd"
+[dumpfile_mtime] "Fri Dec 16 08:15:16 2022"
+[dumpfile_size] 772426633
+[savefile] "/media/marco/DATA/programming/rtl/cryptech/icarus/dump.gtkw"
+[timestart] 0
+[size] 1366 836
+[pos] -51 -51
+*-32.509335 9260000000 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
+[treeopen] tb_curve_multiplier_256.
+[treeopen] tb_curve_multiplier_256.uut.
+[sst_width] 233
+[signals_width] 166
+[sst_expanded] 1
+[sst_vpaned_height] 226
+@28
+tb_curve_multiplier_256.uut.clk
+tb_curve_multiplier_256.uut.ena
+tb_curve_multiplier_256.uut.rdy
+@22
+tb_curve_multiplier_256.uut.fsm_state[4:0]
+@29
+tb_curve_multiplier_256.uut.k_addr[2:0]
+@23
+tb_curve_multiplier_256.uut.k_bit_index[4:0]
+tb_curve_multiplier_256.uut.k_din[31:0]
+tb_curve_multiplier_256.uut.k_din_shreg[31:0]
+@28
+tb_curve_multiplier_256.uut.rxy_addr[2:0]
+@22
+tb_curve_multiplier_256.uut.rxy_dout[31:0]
+@28
+tb_curve_multiplier_256.uut.ry_wren
+tb_curve_multiplier_256.uut.worker_trig
+tb_curve_multiplier_256.uut.worker_done
+[pattern_trace] 1
+[pattern_trace] 0

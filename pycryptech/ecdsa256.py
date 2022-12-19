@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 
 import argparse
+import time
 
 from ecdsa256_edalize import simulate, verilate, synth_trellis
 from ecdsa256_yosys import synth_yosys
@@ -25,6 +26,8 @@ def cli(argv=[]):
 def main(argv=[]):
     p = cli(argv=argv)
 
+    start_time = time.time()
+
     # simulation
     if p.simulate:
         simulate()
@@ -39,6 +42,11 @@ def main(argv=[]):
     if p.synth_trellis:
         synth_trellis()
     
+    end_time = time.time()
+
+    elapsed_time = end_time - start_time
+    print('Execution time:', elapsed_time, '[s]')
+
     pass
 
 if __name__ == '__main__':    
