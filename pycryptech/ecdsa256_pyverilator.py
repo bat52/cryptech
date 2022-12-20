@@ -227,3 +227,6 @@ def pyverilate(dump_en = False):
     test_ecdsa_point_mul(tb,ECDSA_P256_H2)
 
     pass
+
+if __name__ == '__main__':
+    pyverilate()

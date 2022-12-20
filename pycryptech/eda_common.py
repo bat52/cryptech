@@ -18,7 +18,7 @@ def get_source_files(directory,fmts=['.v','.sv','.vh']) -> list:
     for f in flist:
         # print(f)
         fbase,fext = os.path.splitext(f)
-        fullfile = os.path.join(directory,f)
+        fullfile = os.path.abspath(os.path.join(directory,f))
         if os.path.isfile(fullfile) and (fext in fmts):
             # print('file %s' % f)
             foutlist.append(fullfile)

@@ -30,6 +30,8 @@ TB_VERILATOR_LIST = [
     '../verilator',
 ]
 
+CONSTRAINTS = '../siliconcompiler/ecdsa256_wrapper.sdc'
+
 SIMNAME    = 'ecdsa256'
 TBTOPLEVEL = 'tb_curve_multiplier_256'
 TOPLEVEL   = 'ecdsa256_wrapper'

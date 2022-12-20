@@ -2,3 +2,5 @@ pycryptech/work_*
 *.pyc
 pycryptech/obj_dir/*
 *.vcd
+*.log
+pycryptech/build/*

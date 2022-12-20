@@ -22,3 +22,6 @@
 [submodule "cryptech/cryptech_ecdsa256"]
 	path = cryptech/cryptech_ecdsa256
 	url = https://github.com/bat52/cryptech_ecdsa256
+[submodule "siliconcompiler/siliconcompiler"]
+	path = siliconcompiler/siliconcompiler
+	url = https://github.com/siliconcompiler/siliconcompiler
