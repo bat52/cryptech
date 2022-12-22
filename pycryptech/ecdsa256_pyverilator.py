@@ -73,20 +73,13 @@ class pyverilator_wrapper(object):
         self.sim.io.address = addr
         self.sim.io.write_data = val
         self.sim.io.we = 1
-        self.sim.io.cs = 0
-
-        self.sim.clock.tick()
-
         self.sim.io.cs = 1
-
         self.sim.clock.tick()
 
         # reset bus
         self.sim.io.address = 0
         self.sim.io.write_data = 0
-        self.sim.io.cs = 0
         self.sim.io.we = 0
-
         self.sim.clock.tick()
 
     def reg_read(self,addr = '0x00'):
@@ -97,16 +90,12 @@ class pyverilator_wrapper(object):
         # SW read
         self.sim.io.address = addr
         self.sim.io.we = 0
-        self.sim.io.cs = 0
-        self.sim.clock.tick()
-
         self.sim.io.cs = 1
         self.sim.clock.tick()
 
         outval = self.sim.io.read_data
 
         self.sim.io.address = 0
-        self.sim.io.cs = 0
         self.sim.clock.tick()
 
         # print(hex(outval))
