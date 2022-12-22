@@ -50,7 +50,7 @@ vluint64_t sim_time = 0;
 #define CORE_NAME1    0x61323536 // "a256"
 #define CORE_VERSION  0x302E3230 // "0.20"
 
-void test_reg_name(Vecdsa256_wrapper *dut, vluint64_t *sim_time){
+void test_reg_name(Vecdsa256_wrapper *dut){
     static uint posedge_counter = 0;
 
     if (dut->clk == 1)
@@ -95,7 +95,7 @@ int main(int argc, char** argv, char** env) {
         if(sim_time > 1 && sim_time < 5 )
             dut->reset_n = 1; // release reset
 
-        test_reg_name(dut, &sim_time);
+        test_reg_name(dut);
 
         dut->clk ^= 1;
         dut->eval();
