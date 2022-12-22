@@ -1,7 +1,9 @@
 #include <stdlib.h>
 #include <iostream>
 #include <verilated.h>
+#if VM_TRACE
 #include <verilated_vcd_c.h>
+#endif
 // 
 #include "Vecdsa256_wrapper.h"
 
@@ -80,10 +82,13 @@ void test_reg_name(Vecdsa256_wrapper *dut, vluint64_t *sim_time){
 int main(int argc, char** argv, char** env) {
     Vecdsa256_wrapper *dut = new Vecdsa256_wrapper;
 
+#if VM_TRACE
     Verilated::traceEverOn(true);
     VerilatedVcdC *m_trace = new VerilatedVcdC;
+
     dut->trace(m_trace, 5);
     m_trace->open("dump.vcd");
+#endif
 
     dut->reset_n = 0; // reset
     while (sim_time < MAX_SIM_TIME) {
@@ -94,11 +99,15 @@ int main(int argc, char** argv, char** env) {
 
         dut->clk ^= 1;
         dut->eval();
+#if VM_TRACE
         m_trace->dump(sim_time);
+#endif
         sim_time++;
     }
 
+#if VM_TRACE
     m_trace->close();
+#endif
     delete dut;
     exit(EXIT_SUCCESS);
 }
