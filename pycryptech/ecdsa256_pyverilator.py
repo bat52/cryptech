@@ -123,97 +123,97 @@ class pyverilator_wrapper(object):
 
     pass
 
-def test_read_regs(tb):
-    assert(isinstance(tb,pyverilator_wrapper))
+class tb_test(pyverilator_wrapper):
 
-    print('Reading NAME0...')
-    name0 = tb.reg_read(ecdsa256regAddr.NAME0)
-    assert(name0 == CORE_NAME0)
+    def test_read_regs(self):
 
-    print('Reading NAME1...')
-    name1 = tb.reg_read(ecdsa256regAddr.NAME1)
-    assert(name1 == CORE_NAME1)
+        print('Reading NAME0...')
+        name0 = self.reg_read(ecdsa256regAddr.NAME0)
+        assert(name0 == CORE_NAME0)
 
-    print('Reading VERSION...')
-    name1 = tb.reg_read(ecdsa256regAddr.VERSION)
-    assert(name1 == CORE_VERSION)
+        print('Reading NAME1...')
+        name1 = self.reg_read(ecdsa256regAddr.NAME1)
+        assert(name1 == CORE_NAME1)
 
-    print('W/R DUMMY...')
-    for _ in range(3):
-        rndval = random.randrange(1,ast.literal_eval('0xFFFFFFFF'))
-        tb.reg_write(ecdsa256regAddr.DUMMY,rndval)
-        assert( tb.reg_read(ecdsa256regAddr.DUMMY) == rndval )
+        print('Reading VERSION...')
+        name1 = self.reg_read(ecdsa256regAddr.VERSION)
+        assert(name1 == CORE_VERSION)
 
-    pass
+        print('W/R DUMMY...')
+        for _ in range(3):
+            rndval = random.randrange(1,ast.literal_eval('0xFFFFFFFF'))
+            self.reg_write(ecdsa256regAddr.DUMMY,rndval)
+            assert( self.reg_read(ecdsa256regAddr.DUMMY) == rndval )
 
-def test_ecdsa_point_mul(tb,tc):
-    # check inputs
-    assert(isinstance(tb,pyverilator_wrapper))
-    assert(isinstance(tc,ecdsaTc))
+        pass
 
-    # write input
-    print('Writing K...')
-    tb.write_multi_word(ecdsa256regAddr.K, tc.k)
+    def test_ecdsa_point_mul(self,tc):
+        # check inputs
+        assert(isinstance(tc,ecdsaTc))
 
-    print('Checking K...')
-    tb.compare_multi_word(ecdsa256regAddr.K, tc.k)
+        # write input
+        print('Writing K...')
+        self.write_multi_word(ecdsa256regAddr.K, tc.k)
 
-    print('Starting multiplication...')
-    tb.reg_write(ecdsa256regAddr.CONTROL,ecdsa256Control.en)
+        print('Checking K...')
+        self.compare_multi_word(ecdsa256regAddr.K, tc.k)
 
-    print('Polling for multiplication done...')
-    status = 1
-    niterations = 0
-    while (status < 3) and (niterations < ECDSA256_NCYCLES_TIMEOUT):
-        status = tb.reg_read(ecdsa256regAddr.STATUS)
-        if (niterations % (ECDSA256_NCYCLES_TIMEOUT/10)) == 0:
-            print('#%d, STATUS: %d' % (niterations,status) )
-        niterations += 1
+        print('Starting multiplication...')
+        self.reg_write(ecdsa256regAddr.CONTROL,ecdsa256Control.en)
 
-    print('#%d, STATUS: %d' % (niterations,status) )        
-    print('Done!')
+        print('Polling for multiplication done...')
+        status = 1
+        niterations = 0
+        while (status < 3) and (niterations < ECDSA256_NCYCLES_TIMEOUT):
+            status = self.reg_read(ecdsa256regAddr.STATUS)
+            if (niterations % (ECDSA256_NCYCLES_TIMEOUT/10)) == 0:
+                print('#%d, STATUS: %d' % (niterations,status) )
+            niterations += 1
 
-    print('Checking multiplication result QX...')
-    tb.compare_multi_word(ecdsa256regAddr.QX,tc.qx)
-    print('Checking multiplication result QY...')
-    tb.compare_multi_word(ecdsa256regAddr.QY,tc.qy)
-    print('Done!')
+        print('#%d, STATUS: %d' % (niterations,status) )        
+        print('Done!')
 
-    tb.reg_write(ecdsa256regAddr.CONTROL,0)
-    pass
+        print('Checking multiplication result QX...')
+        self.compare_multi_word(ecdsa256regAddr.QX,tc.qx)
+        print('Checking multiplication result QY...')
+        self.compare_multi_word(ecdsa256regAddr.QY,tc.qy)
+        print('Done!')
+
+        self.reg_write(ecdsa256regAddr.CONTROL,0)
+        pass
 
 def pyverilate(dump_en = False):
     topfname = os.path.join(SRC_DIR_LIST[-1], TOPLEVEL+'.v')
     print(topfname)
 
     args = ["-Wno-TIMESCALEMOD", "-Wno-WIDTH"]
-    tb = pyverilator_wrapper(fname = topfname,
-                             verilog_path = SRC_DIR_LIST+INC_DIR_LIST,
-                             command_args = args,
-                             dump_en=dump_en)
+    tb = tb_test(fname = topfname,
+                verilog_path = SRC_DIR_LIST+INC_DIR_LIST,
+                command_args = args,
+                dump_en=dump_en)
 
-    test_read_regs(tb)
+    tb.test_read_regs()
 
     print("1. Q1 = d1 * G...")
-    test_ecdsa_point_mul(tb,ECDSA_P256_NSA_TC1)
+    tb.test_ecdsa_point_mul(ECDSA_P256_NSA_TC1)
     
     print("2. R = k * G...")
-    test_ecdsa_point_mul(tb,ECDSA_P256_NSA_TC2)
+    tb.test_ecdsa_point_mul(ECDSA_P256_NSA_TC2)
     
     print("3. Q2 = d2 * G...")
-    test_ecdsa_point_mul(tb,ECDSA_P256_RANDOM)
+    tb.test_ecdsa_point_mul(ECDSA_P256_RANDOM)
     
     print("4. O = n * G...")
-    test_ecdsa_point_mul(tb,ECDSA_P256_O)
+    tb.test_ecdsa_point_mul(ECDSA_P256_O)
     
     print("5. G = (n + 1) * G...")
-    test_ecdsa_point_mul(tb,ECDSA_P256_G)
+    tb.test_ecdsa_point_mul(ECDSA_P256_G)
 
     print("6. H = 2 * G...")
-    test_ecdsa_point_mul(tb,ECDSA_P256_H)
+    tb.test_ecdsa_point_mul(ECDSA_P256_H)
     
     print("7. H = (n + 2) * G...")
-    test_ecdsa_point_mul(tb,ECDSA_P256_H2)
+    tb.test_ecdsa_point_mul(ECDSA_P256_H2)
 
     pass
 
