@@ -40,8 +40,8 @@ def sc_main(remote_en = False):
     chip.load_target('freepdk45_demo')            # load predefined target
     chip.set('option', 'remote', remote_en)
     chip.run()                                    # run compilation
-    # chip.summary()                                # print results summary
-    # chip.show()                                   # show layout file
+    chip.summary()                                # print results summary
+    chip.show()                                   # show layout file
 
 if __name__ == '__main__':
     p = sc_cli(sys.argv[1:])
