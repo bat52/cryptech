@@ -82,7 +82,8 @@ def verilate(dump_en = True) -> None:
             ]
 
     # get design files
-    files = eda_get_files(SRC_DIR_LIST + TB_VERILATOR_LIST, work_root, fmts=['.v','.cpp','.hpp'])
+    # files = eda_get_files(SRC_DIR_LIST + TB_VERILATOR_LIST, work_root, fmts=['.v','.vh','.c','.cpp','.h'])
+    files = eda_get_files(SRC_DIR_LIST + TB_VERILATOR_LIST, work_root, fmts=['.v','.vh','.cpp','.c'])
 
     # get include directories
     options = verilator_options + get_inc_list(INC_DIR_LIST,work_root)
