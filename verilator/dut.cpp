@@ -7,6 +7,10 @@
 #endif
 #include "Vecdsa256_wrapper.h"
 
+#ifndef CLK_HALF_PERIOD_DELAY
+#define CLK_HALF_PERIOD_DELAY 5
+#endif
+
 class DutWrapper : public Vecdsa256_wrapper{
     public: 
         vluint64_t sim_time = 0;
@@ -32,7 +36,8 @@ void DutWrapper::clock_tick()
 #if VM_TRACE
     this->m_trace->dump(sim_time);
 #endif
-    this->sim_time++;
+    // this->sim_time++;
+    this->sim_time += CLK_HALF_PERIOD_DELAY;
 }
 
 void DutWrapper::release_reset()

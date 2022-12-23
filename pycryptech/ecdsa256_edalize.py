@@ -75,6 +75,8 @@ def verilate(dump_en = True) -> None:
     verilator_options = ['--top-module %s' % TOPLEVEL,
                          '-Wno-WIDTH', # issues at assignment
                          '-Wno-CASEINCOMPLETE', # These should probably be fixed
+                         '--timescale "1ns/1ns"',
+                         '--timescale-override "1ns/1ns"',
                          ] 
     if dump_en:
         verilator_options = verilator_options + [
