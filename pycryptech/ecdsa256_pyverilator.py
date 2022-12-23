@@ -186,7 +186,7 @@ def pyverilate(dump_en = False):
     topfname = os.path.join(SRC_DIR_LIST[-1], TOPLEVEL+'.v')
     print(topfname)
 
-    args = ["-Wno-TIMESCALEMOD", "-Wno-WIDTH"]
+    args = ["-Wno-TIMESCALEMOD", "-Wno-WIDTH", '--timescale-override', '1ns/1ns']
     tb = tb_test(fname = topfname,
                 verilog_path = SRC_DIR_LIST+INC_DIR_LIST,
                 command_args = args,
@@ -194,26 +194,27 @@ def pyverilate(dump_en = False):
 
     tb.test_read_regs()
 
-    print("1. Q1 = d1 * G...")
-    tb.test_ecdsa_point_mul(ECDSA_P256_NSA_TC1)
-    
-    print("2. R = k * G...")
-    tb.test_ecdsa_point_mul(ECDSA_P256_NSA_TC2)
-    
-    print("3. Q2 = d2 * G...")
-    tb.test_ecdsa_point_mul(ECDSA_P256_RANDOM)
-    
-    print("4. O = n * G...")
-    tb.test_ecdsa_point_mul(ECDSA_P256_O)
-    
-    print("5. G = (n + 1) * G...")
-    tb.test_ecdsa_point_mul(ECDSA_P256_G)
+    if True:
+        print("1. Q1 = d1 * G...")
+        tb.test_ecdsa_point_mul(ECDSA_P256_NSA_TC1)
+        
+        print("2. R = k * G...")
+        tb.test_ecdsa_point_mul(ECDSA_P256_NSA_TC2)
+        
+        print("3. Q2 = d2 * G...")
+        tb.test_ecdsa_point_mul(ECDSA_P256_RANDOM)
+        
+        print("4. O = n * G...")
+        tb.test_ecdsa_point_mul(ECDSA_P256_O)
+        
+        print("5. G = (n + 1) * G...")
+        tb.test_ecdsa_point_mul(ECDSA_P256_G)
 
-    print("6. H = 2 * G...")
-    tb.test_ecdsa_point_mul(ECDSA_P256_H)
-    
-    print("7. H = (n + 2) * G...")
-    tb.test_ecdsa_point_mul(ECDSA_P256_H2)
+        print("6. H = 2 * G...")
+        tb.test_ecdsa_point_mul(ECDSA_P256_H)
+        
+        print("7. H = (n + 2) * G...")
+        tb.test_ecdsa_point_mul(ECDSA_P256_H2)
 
     pass
 
