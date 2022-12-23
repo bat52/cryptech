@@ -88,7 +88,11 @@ void test_ecdsa_point_mul(const uint32_t *k, const uint32_t *qx, const uint32_t 
 
 void test_all()
 {
+    dut_init();
+
     test_read_registers();
     test_rw_registers();
     test_ecdsa_point_mul(ECDSA_P256_D_NSA, ECDSA_P256_QX_NSA, ECDSA_P256_QY_NSA );
+
+    dut_close();
 }

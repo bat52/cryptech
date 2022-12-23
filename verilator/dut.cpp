@@ -1,10 +1,10 @@
 #include <stdlib.h>
 #include <iostream>
 #include <verilated.h>
+
 #if VM_TRACE
 #include <verilated_vcd_c.h>
 #endif
-// 
 #include "Vecdsa256_wrapper.h"
 
 class DutWrapper : public Vecdsa256_wrapper{
@@ -12,16 +12,17 @@ class DutWrapper : public Vecdsa256_wrapper{
         vluint64_t sim_time = 0;
         DutWrapper();
         ~DutWrapper();
+
+        void release_reset();
         void reg_write(uint32_t addr, uint32_t val);
         uint32_t reg_read(uint32_t addr);
-        void check_reg_val(uint32_t addr, uint32_t val);
-        void write_multi_word(uint32_t baseaddr, uint32_t *val);
-        void compare_multi_word(uint32_t baseaddr, uint32_t *val);
+
     private:
+        #if VM_TRACE    
+        VerilatedVcdC *m_trace;
+        #endif
         void clock_tick();
-#if VM_TRACE    
-        VerilatedVcdC *m_trace = new VerilatedVcdC;
-#endif
+
 };
 
 void DutWrapper::clock_tick()
@@ -34,16 +35,8 @@ void DutWrapper::clock_tick()
     this->sim_time++;
 }
 
-DutWrapper::DutWrapper()
+void DutWrapper::release_reset()
 {
-    #if VM_TRACE
-    Verilated::traceEverOn(true);
-    // this->m_trace = new VerilatedVcdC;
-
-    this->trace(this->m_trace, 5);
-    this->m_trace->open("dump.vcd");
-    #endif
-
     this->address = 0;
     this->write_data = 0;
     this->we = 0;
@@ -56,12 +49,26 @@ DutWrapper::DutWrapper()
     this->reset_n = 1;
     this->clock_tick();
     this->clock_tick();
+
+}
+
+DutWrapper::DutWrapper()
+{
+    #if VM_TRACE
+    Verilated::traceEverOn(true);
+    this->m_trace = new VerilatedVcdC;
+    this->trace(this->m_trace, 5);
+    this->m_trace->open("dump.vcd");
+    #endif
+
+    this->release_reset();
 }
 
 DutWrapper::~DutWrapper()
 {
 #if VM_TRACE
     m_trace->close();
+    delete m_trace;
 #endif
 }
 
@@ -107,7 +114,16 @@ uint32_t DutWrapper::reg_read(uint32_t addr)
 
 /////////////// C-style access
 
-DutWrapper *dut = new DutWrapper;
+DutWrapper *dut;
+
+void dut_init(){
+    dut = new DutWrapper;
+}
+
+void dut_close(){
+    delete dut;
+}
+
 uint32_t reg_read(uint32_t addr)
 {
     return dut->reg_read(addr);
