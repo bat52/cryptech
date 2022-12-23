@@ -6,7 +6,6 @@
 #endif
 // 
 #include "Vecdsa256_wrapper.h"
-#include "ecdsa256_test_vectors.h"
 
 class DutWrapper : public Vecdsa256_wrapper{
     public: 
@@ -106,35 +105,8 @@ uint32_t DutWrapper::reg_read(uint32_t addr)
     return outval;
 }        
 
-void DutWrapper::check_reg_val(uint32_t addr, uint32_t val)
-{
-    uint32_t readval;
-    readval = this->reg_read( addr );
-    if ( readval != val )
-        {
-        std::cout << "ERROR!!! REGISTER 0x" << std::hex << (addr)
-        << " VALUE: " << std::hex << (readval) << '\n';
-        }
-}
-
-void DutWrapper::write_multi_word(uint32_t baseaddr, uint32_t *val)
-{
-    int idx; 
-    for (idx=0; idx < NWORDS_ECDSA256; idx++)
-        this->reg_write(baseaddr + idx, val[idx]);
-}
-
-void DutWrapper::compare_multi_word(uint32_t baseaddr, uint32_t *val)
-{
-    int idx;
-    // read inputs
-    for( idx=0; idx < NWORDS_ECDSA256; idx++)
-        this->check_reg_val(baseaddr + idx, val[idx]);
-}
-
 /////////////// C-style access
 
-/*
 DutWrapper *dut = new DutWrapper;
 uint32_t reg_read(uint32_t addr)
 {
@@ -145,4 +117,3 @@ void reg_write(uint32_t addr, uint32_t val)
 {
     dut->reg_write(addr,val);
 }
-*/
