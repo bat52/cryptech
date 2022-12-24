@@ -4,3 +4,4 @@ pycryptech/obj_dir/*
 *.vcd
 *.log
 pycryptech/build/*
+*.fst
