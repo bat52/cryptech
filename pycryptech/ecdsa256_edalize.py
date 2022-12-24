@@ -30,7 +30,6 @@ def simulate(dump_en = True) -> None:
 
     iverilog_options = []
     if dump_en:
-        dump_file = 'dump.vcd'
         iverilog_options = iverilog_options + [
             '-DDUMP_EN', 
             '-DDUMP_LEVEL=0', 
@@ -65,9 +64,10 @@ def simulate(dump_en = True) -> None:
     backend.run()
 
     if dump_en:
+        dump_file = 'dump.vcd'
         vcd_view(os.path.join(work_root, dump_file))
 
-def verilate(dump_en = True) -> None:
+def verilate(dump_en = True, dump_fst = False) -> None:
     # tool
     tool = 'verilator'
     work_root = get_clean_work(tool)
@@ -79,12 +79,11 @@ def verilate(dump_en = True) -> None:
                          '--timescale-override "1ns/1ns"',
                          ] 
     if dump_en:
-        verilator_options = verilator_options + [
-            '--trace', 
-            ]
+        verilator_options += ['--trace']
+        if dump_fst:
+            verilator_options += ['-DDUMP_FST']
 
     # get design files
-    # files = eda_get_files(SRC_DIR_LIST + TB_VERILATOR_LIST, work_root, fmts=['.v','.vh','.c','.cpp','.h'])
     files = eda_get_files(SRC_DIR_LIST + TB_VERILATOR_LIST, work_root, fmts=['.v','.vh','.cpp','.c'])
 
     # get include directories
@@ -112,9 +111,12 @@ def verilate(dump_en = True) -> None:
     backend.run()
 
     if dump_en:
-        dump_file = 'dump.vcd'
+        if dump_fst:
+            dump_file = 'dump.fst'
+        else:
+            dump_file = 'dump.vcd'
         vcd_view( os.path.join(work_root, dump_file), 
-                  '../verilator/tb.gtkw')
+                  '../verilator/tb.gtkw', '-o')
 
 def synth_trellis() -> None:
 

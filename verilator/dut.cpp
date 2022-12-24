@@ -3,12 +3,24 @@
 #include <verilated.h>
 
 #if VM_TRACE
-#include <verilated_vcd_c.h>
+    #ifdef DUMP_FST
+        #include <verilated_fst_c.h>
+        #define DUMP_TYPE VerilatedFstC
+        #define DUMP_FILE "dump.fst"
+    #else
+        #include <verilated_vcd_c.h>
+        #define DUMP_TYPE VerilatedVcdC
+        #define DUMP_FILE "dump.vcd"
+    #endif
 #endif
 #include "Vecdsa256_wrapper.h"
 
 #ifndef CLK_HALF_PERIOD_DELAY
 #define CLK_HALF_PERIOD_DELAY 5
+#endif
+
+#ifndef DUMP_LEVEL
+#define DUMP_LEVEL 0
 #endif
 
 class DutWrapper : public Vecdsa256_wrapper{
@@ -23,7 +35,7 @@ class DutWrapper : public Vecdsa256_wrapper{
 
     private:
         #if VM_TRACE    
-        VerilatedVcdC *m_trace;
+        DUMP_TYPE *m_trace;
         #endif
         void half_clock_tick();
         void clock_tick();
@@ -65,10 +77,10 @@ void DutWrapper::release_reset()
 DutWrapper::DutWrapper()
 {
     #if VM_TRACE
-    Verilated::traceEverOn(true);
-    this->m_trace = new VerilatedVcdC;
-    this->trace(this->m_trace, 5);
-    this->m_trace->open("dump.vcd");
+        Verilated::traceEverOn(true);
+        this->m_trace = new DUMP_TYPE;
+        this->trace(this->m_trace, DUMP_LEVEL);
+        this->m_trace->open(DUMP_FILE);
     #endif
 
     this->release_reset();

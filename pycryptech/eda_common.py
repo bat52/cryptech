@@ -46,11 +46,11 @@ def get_inc_list(inclist,work_root,prefix='-I') -> list:
     return outlist
     pass
 
-def vcd_view(fname,savefname=''):
+def vcd_view(fname,savefname='',options=''):
     if os.path.isfile(savefname):
-        cmdstr = 'gtkwave -a %s %s' % (savefname,fname)
+        cmdstr = 'gtkwave %s -a %s %s' % (options, savefname,fname)
     else:
-        cmdstr = 'gtkwave ' + fname
+        cmdstr = 'gtkwave %s %s' % (options,fname)
 
     # print(cmdstr)
     os.system(cmdstr)
