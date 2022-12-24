@@ -5,3 +5,4 @@ pycryptech/obj_dir/*
 *.log
 pycryptech/build/*
 *.fst
+siliconcompiler/example/build/*
