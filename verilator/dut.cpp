@@ -25,19 +25,24 @@ class DutWrapper : public Vecdsa256_wrapper{
         #if VM_TRACE    
         VerilatedVcdC *m_trace;
         #endif
+        void half_clock_tick();
         void clock_tick();
-
 };
 
-void DutWrapper::clock_tick()
+void DutWrapper::half_clock_tick()
 {
     this->clk ^= 1;
     this->eval();
 #if VM_TRACE
     this->m_trace->dump(sim_time);
 #endif
-    // this->sim_time++;
     this->sim_time += CLK_HALF_PERIOD_DELAY;
+}
+
+void DutWrapper::clock_tick()
+{
+    this->half_clock_tick();
+    this->half_clock_tick();
 }
 
 void DutWrapper::release_reset()
@@ -49,7 +54,7 @@ void DutWrapper::release_reset()
 
     this->reset_n = 0; // reset
     this->clock_tick();
-    this->clock_tick();
+    this->half_clock_tick(); // asynchronous
 
     this->reset_n = 1;
     this->clock_tick();
@@ -103,13 +108,9 @@ uint32_t DutWrapper::reg_read(uint32_t addr)
     this->cs = 1;
     this->clock_tick();
 
-    // reset bus
-    // this->address = 0;
-    // this->cs = 0;
-    // this->clock_tick();
-
     outval = this->read_data;
 
+    // reset bus
     this->address = 0;
     this->cs = 0;
     this->clock_tick();
