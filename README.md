@@ -6,6 +6,8 @@ Initial work to support synthesis with [trellis](https://github.com/YosysHQ/prjt
 
 # usage
 
-    cd edalize
-    ./ecdsa256.py
+    cd pycryptech
+    ./ecdsa256.py --help           # simulation
+                                   # synthesis with yosys/trellis (not working yet)
+    ./ecdsa256_siliconcompiler.py  # backend flow with siliconcompiler (not working yet)
   
