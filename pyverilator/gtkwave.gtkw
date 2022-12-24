@@ -1,0 +1,32 @@
+[*]
+[*] GTKWave Analyzer v3.3.104 (w)1999-2020 BSI
+[*] Fri Dec 16 23:59:49 2022
+[*]
+[dumpfile] "/media/marco/DATA/programming/rtl/cryptech/pycryptech/work_icarus/dump.vcd"
+[dumpfile_mtime] "Fri Dec 16 08:15:16 2022"
+[dumpfile_size] 772426633
+[savefile] "/media/marco/DATA/programming/rtl/cryptech/pycryptech/gtkwave.gtkw"
+[timestart] 0
+[size] 1526 836
+[pos] -51 -51
+*-33.726871 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
+[treeopen] tb_curve_multiplier_256.
+[sst_width] 233
+[signals_width] 166
+[sst_expanded] 1
+[sst_vpaned_height] 226
+@28
+tb_curve_multiplier_256.uut.rst_n
+tb_curve_multiplier_256.uut.ena
+tb_curve_multiplier_256.uut.rdy
+@22
+tb_curve_multiplier_256.uut.fsm_state[4:0]
+@28
+tb_curve_multiplier_256.uut.k_addr[2:0]
+@22
+tb_curve_multiplier_256.uut.k_bit_index[4:0]
+tb_curve_multiplier_256.uut.k_din[31:0]
+@23
+tb_curve_multiplier_256.uut.k_din_shreg[31:0]
+[pattern_trace] 1
+[pattern_trace] 0
