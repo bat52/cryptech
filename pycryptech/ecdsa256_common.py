@@ -12,8 +12,8 @@ SRC_DIR_LIST = [
 ]
 
 INC_DIR_LIST = [
-    '../cryptech/cryptech_lib/lowlevel',
-    '../cryptech/cryptech_ecdsalib/rtl/microcode',    
+    '../cryptech/cryptech_lib/lowlevel',             # cryptech_primitive_switch.vh
+    '../cryptech/cryptech_ecdsalib/rtl/microcode',   # ecdsa_uop.vh 
 ]
 
 TB_DIR_LIST = [    

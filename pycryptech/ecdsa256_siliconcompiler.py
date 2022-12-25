@@ -31,15 +31,30 @@ def sc_cli(argv=[]):
     p = parser.parse_args(argv)
     return p    
 
-def sc_main(remote_en = False):
+def sc_main(remote_en = False, width = 1500, height=1500):
     #sc_setenv()
 
     chip = sc.Chip(TOPLEVEL)                      # create chip object
     chip.set('input', 'verilog', get_source_files_alldir(SRC_DIR_LIST + INC_DIR_LIST))  # define list of source files
+    chip.set('option','idir', INC_DIR_LIST)
     chip.set('input', 'sdc', CONSTRAINTS)         # set constraints file
     chip.load_target('freepdk45_demo')            # load predefined target
     chip.set('option', 'remote', remote_en)
-    chip.run()                                    # run compilation
+
+    chip.set('asic', 'diearea', [(0,0), (width,height)])
+    chip.set('asic', 'corearea', [(10,10), (width-10,height-10)])
+
+    chip.set('datasheet', chip.top(), 'pin', 'vdd', 'type', 'global', 'power')
+    chip.set('datasheet', chip.top(), 'pin', 'vss', 'type', 'global', 'ground')
+
+    # chip.add('option', 'steplist', 'import')
+    # chip.add('option', 'steplist', 'convert')
+    # chip.add('option', 'steplist', 'syn')
+
+    ## execute 
+    chip.run() 
+
+    ## results         
     chip.summary()                                # print results summary
     chip.show()                                   # show layout file
 
