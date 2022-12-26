@@ -6,3 +6,4 @@ pycryptech/obj_dir/*
 pycryptech/build/*
 *.fst
 siliconcompiler/example/build/*
+*.zip

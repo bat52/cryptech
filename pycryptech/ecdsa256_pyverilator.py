@@ -34,7 +34,8 @@ class pyverilator_wrapper(object):
         print(ofname)
         self.sim = pyverilator.PyVerilator.build(ofname, 
                                                  verilog_path=verilog_path, 
-                                                 command_args=command_args) # command_args not passed to verilator with pyverilator 0.7.0
+                                                 args=command_args) # args not available on pypi version of pyverilator
+                                                                    # https://github.com/bat52/pyverilator
         if dump_en:
             self.view_waves()
 
