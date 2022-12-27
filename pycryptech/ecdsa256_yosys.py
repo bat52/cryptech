@@ -2,7 +2,7 @@
 
 import os
 from ecdsa256_common import *
-from eda_common import get_source_files_alldir, get_clean_work
+from eda_common import get_source_files_alldir, get_clean_work, get_inc_list
 
 def synth_yosys() -> None:
 
@@ -10,10 +10,8 @@ def synth_yosys() -> None:
     work_root = get_clean_work(tool,True)
 
     # create yosys script
-    if False:
-        lines = ['read_verilog ' + s for s in get_source_files_alldir(SRC_DIR_LIST,fmts=['.v'])]
-    else:
-        lines = ['read_verilog ' + s for s in get_source_files_alldir(INC_DIR_LIST+SRC_DIR_LIST,fmts=['.v','.vh'])]
+    lines  = get_inc_list(INC_DIR_LIST,prefix='read -incdir ')
+    lines += ['read_verilog ' + s for s in get_source_files_alldir(SRC_DIR_LIST,fmts=['.v'])]
 
     lines.append('hierarchy -top %s' % TOPLEVEL)
     lines.append('write_verilog %s_full.v' % os.path.join(work_root,TOPLEVEL))
@@ -30,12 +28,11 @@ def synth_yosys() -> None:
     os.system('cat %s' % ysoutfile)
 
     # yosys command
-    # args = get_inc_list(INC_DIR_LIST,work_root)
     cmdstr = 'yosys -s %s ' % ysoutfile
-    # cmdstr = cmdstr + ' '.join(args)
-
     print(cmdstr)
-
     os.system(cmdstr)
 
     pass
+
+if __name__ == '__main__':
+    synth_yosys()

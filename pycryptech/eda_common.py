@@ -36,11 +36,14 @@ def get_source_files(directory,fmts=['.v','.sv','.vh']) -> list:
     return foutlist
     pass
 
-def get_inc_list(inclist,work_root,prefix='-I') -> list:
+def get_inc_list(inclist,work_root='',prefix='-I') -> list:
 
     outlist = []
     for ipath in inclist:
-        inc = prefix + os.path.relpath(ipath, work_root)
+        if len(work_root)>0:
+            inc = prefix + os.path.relpath(ipath,work_root)
+        else:
+            inc = prefix + os.path.abspath(ipath)
         outlist.append(inc)
 
     return outlist
