@@ -68,3 +68,15 @@ def get_clean_work(tool='',makedir=False):
         os.makedirs(work_root)
         
     return work_root
+
+def write_file_lines(fname, lines=[], mode='w', print_en=False):
+    
+    f = open(fname, mode)
+    for l in lines: 
+        # print(l)
+        f.write(l + '\n')
+    f.close()
+
+    # print file
+    if print_en:
+        os.system('cat %s' % fname)

@@ -2,7 +2,7 @@
 
 import os
 from ecdsa256_common import *
-from eda_common import get_source_files_alldir, get_clean_work, get_inc_list
+from eda_common import get_source_files_alldir, get_clean_work, get_inc_list, write_file_lines
 
 def synth_yosys() -> None:
 
@@ -15,20 +15,17 @@ def synth_yosys() -> None:
 
     lines.append('hierarchy -top %s' % TOPLEVEL)
     lines.append('write_verilog %s_full.v' % os.path.join(work_root,TOPLEVEL))
-    lines += ['synth']
+    if True:
+        lines += ['synth']
+    else:
+        lines += ['synth_ice40']
     lines.append('write_verilog %s_synth.v' % os.path.join(work_root,TOPLEVEL))
-    # lines += ['stat']
+    # lines += ['show -prefix ./ecdsa256 -format svg -viewer ']
+    # lines += ['stat -tech xilinx']
 
     # print output
     ysoutfile = os.path.join(work_root,'%s.ys' % TOPLEVEL)
-    f = open(ysoutfile, "a")
-    for l in lines: 
-        # print(l)
-        f.write(l + '\n')
-    f.close()
-
-    # print file
-    os.system('cat %s' % ysoutfile)
+    write_file_lines(ysoutfile,lines,print_en=True)    
 
     # yosys command
     cmdstr = 'yosys -s %s > %s/yosys.log' % (ysoutfile,work_root)
