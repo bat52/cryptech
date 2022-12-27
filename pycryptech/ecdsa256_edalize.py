@@ -236,5 +236,5 @@ def edalize_main(argv=[]):
 
 if __name__ == '__main__':    
     import sys
-    main(sys.argv[1:])
+    edalize_main(sys.argv[1:])
     pass
