@@ -1,6 +1,8 @@
 #!/usr/bin/env python3
 
 import os
+import argparse
+import time
 from edalize import *
 
 from ecdsa256_common import *
@@ -125,11 +127,11 @@ def synth_trellis() -> None:
     work_root = get_clean_work(tool)
     
     # get design files
-    files = eda_get_files(SRC_DIR_LIST, work_root, fmts=['.v'])
-    # files = eda_get_files(SRC_DIR_LIST+INC_DIR_LIST, work_root, fmts=['.v','.vh'])
+    # files = eda_get_files(SRC_DIR_LIST, work_root, fmts=['.v'])
+    files = eda_get_files(SRC_DIR_LIST+INC_DIR_LIST, work_root, fmts=['.v','.vh'])
 
     # get include directories
-    options = get_inc_list(INC_DIR_LIST,work_root)
+    options = get_inc_list(INC_DIR_LIST,prefix='read -incdir ')
 
     tool_options = {
         tool :
@@ -153,3 +155,86 @@ def synth_trellis() -> None:
     backend.build()
     backend.run()
 
+def synth_yosys_edalize() -> None:
+
+    # tool
+    tool = 'yosys'
+    work_root = get_clean_work(tool)
+    
+    # get design files
+    files = eda_get_files(SRC_DIR_LIST+INC_DIR_LIST, work_root, fmts=['.v','.vh'])
+    # files = eda_get_files(SRC_DIR_LIST, work_root, fmts=['.v'])
+
+    # get include directories
+    # files += get_inc_list(INC_DIR_LIST)
+    # files += INC_DIR_LIST
+
+    tool_options = {
+        tool :
+            {
+            # 'incdirs' : INC_DIR_LIST,
+            # 'yosys_synth_options'  : options,
+            'arch': 'ice40',
+        },
+        
+    }
+
+    edam = {
+    'files'        : files,
+    'name'         : SIMNAME,
+    'toplevel'     : TOPLEVEL,
+    'tool_options' : tool_options
+    }
+
+    backend = get_edatool(tool)(edam=edam,
+                                work_root=work_root)
+
+    os.makedirs(work_root)
+    backend.configure()
+    backend.build()
+    backend.run()
+
+def edalize_cli(argv=[]):
+    parser = argparse.ArgumentParser(description='ECDSA256 Edalize Command Line Interface')
+    # register format options
+
+    # edalize
+    parser.add_argument("-sim",          "--simulate"     , help="Simulate with icarus verilog/edalize", action='store_true' )     
+    parser.add_argument("-v",            "--verilate"     , help="Simulate with verilator/edalize", action='store_true' )
+    parser.add_argument("-synth_trellis","--synth_trellis", help="Synthesize with trellis/edalize", action='store_true') 
+    parser.add_argument("-synth_yosys"  ,"--synth_yosys"  , help="Synthesize with yosys/edalize", action='store_true') 
+
+    # simulation options
+    parser.add_argument("-den",          "--dump_en"      , help="Dump waveforms in simulation.", action='store_true' )
+
+    p = parser.parse_args(argv)
+    return p
+
+def edalize_main(argv=[]):
+    p = edalize_cli(argv=argv)
+
+    start_time = time.time()
+
+    # simulation
+    if p.simulate:
+        simulate(dump_en=p.dump_en)
+    if p.verilate:
+        verilate(dump_en=p.dump_en)
+    
+    # synthesis
+    if p.synth_yosys:
+        synth_yosys_edalize()
+    if p.synth_trellis:
+        synth_trellis()
+    
+    end_time = time.time()
+
+    elapsed_time = end_time - start_time
+    print('Execution time:', elapsed_time, '[s]')
+
+    pass
+
+if __name__ == '__main__':    
+    import sys
+    main(sys.argv[1:])
+    pass
