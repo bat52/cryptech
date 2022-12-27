@@ -15,6 +15,9 @@ def synth_yosys() -> None:
 
     lines.append('hierarchy -top %s' % TOPLEVEL)
     lines.append('write_verilog %s_full.v' % os.path.join(work_root,TOPLEVEL))
+    lines += ['synth']
+    lines.append('write_verilog %s_synth.v' % os.path.join(work_root,TOPLEVEL))
+    # lines += ['stat']
 
     # print output
     ysoutfile = os.path.join(work_root,'%s.ys' % TOPLEVEL)
@@ -28,7 +31,7 @@ def synth_yosys() -> None:
     os.system('cat %s' % ysoutfile)
 
     # yosys command
-    cmdstr = 'yosys -s %s ' % ysoutfile
+    cmdstr = 'yosys -s %s > %s/yosys.log' % (ysoutfile,work_root)
     print(cmdstr)
     os.system(cmdstr)
 
