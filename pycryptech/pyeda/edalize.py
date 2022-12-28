@@ -92,7 +92,7 @@ def verilator(simname='', top='', src_dir=[], inc_dir = [],
     if dump_en:
         verilator_options += ['--trace']
         if dump_fst:
-            verilator_options += ['-DDUMP_FST']
+            verilator_options += ['--trace-fst', '-CFLAGS -DDUMP_FST']
 
     # get design files
     files = eda_get_files(src_dir, work_root, fmts=['.v','.vh','.cpp','.c'])

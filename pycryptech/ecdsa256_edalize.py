@@ -13,7 +13,7 @@ def simulate(dump_en = True) -> None:
         inc_dirs = INC_DIR_LIST + TB_INC_LIST,
         dump_en=dump_en)
 
-def verilate(dump_en = True, dump_fst = False) -> None:
+def verilate(dump_en = True, dump_fst = True) -> None:
 
     verilator(simname=SIMNAME, 
               top=TOPLEVEL, 
