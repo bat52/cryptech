@@ -2,7 +2,7 @@
 
 import os
 from edalize import *
-from eda_common import get_source_files_alldir, vcd_view, get_inc_list, get_clean_work
+from pyeda.common import get_source_files_alldir, vcd_view, get_inc_list, get_clean_work
 
 def eda_get_files(dirlist,work_root,fmts=['.v','.sv','.vh'],print_en=False) -> list:
     fnames = get_source_files_alldir(dirlist,fmts=fmts)

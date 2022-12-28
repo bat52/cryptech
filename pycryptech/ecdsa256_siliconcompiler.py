@@ -5,7 +5,7 @@ import sys
 import argparse
 import siliconcompiler as sc                      
 from ecdsa256_common import *
-from eda_common import get_source_files_alldir
+from pyeda.common import get_source_files_alldir
 
 def sc_path():
     return os.path.abspath('../siliconcompiler/siliconcompiler')

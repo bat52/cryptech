@@ -4,50 +4,15 @@ import os
 import shutil
 import ast
 import random
-import pyverilator
+from pyeda.pyverilator import pyverilator_wrapper
 
 from ecdsa256_common import *
 from ecdsa256_tc import *
 
 ECDSA256_NCYCLES_TIMEOUT=1e6
 
-class pyverilator_wrapper(object):
+class dut_wrapper(pyverilator_wrapper):
     sim = None
-
-    def __init__(self, fname='', verilog_path=[], command_args = [], dump_en = False):
-
-        # rename to .v, if .sv
-        if not os.path.isfile(fname):
-            print('File %s does not exist!' % fname)
-            assert(False)
-
-        base,ext = os.path.splitext(fname)
-        # print(ext)
-
-        if ext == '.sv':
-            print('renaming input file to .v')
-            ofname = base + '.v'
-            shutil.copyfile(fname, ofname)
-        else:
-            ofname = fname
-
-        print(ofname)
-        self.sim = pyverilator.PyVerilator.build(ofname, 
-                                                 verilog_path=verilog_path, 
-                                                 args=command_args) # args not available on pypi version of pyverilator
-                                                                    # https://github.com/bat52/pyverilator
-        if dump_en:
-            self.view_waves()
-
-        self.reset_release()
-
-    def view_waves(self):
-        # start gtkwave to view the waveforms as they are made
-        self.sim.start_gtkwave()
-
-        # add all the io and internal signals to gtkwave
-        self.sim.send_to_gtkwave(self.sim.io)
-        self.sim.send_to_gtkwave(self.sim.internals)
 
     def reset_release(self):
         # tick the automatically detected clock
@@ -124,7 +89,12 @@ class pyverilator_wrapper(object):
 
     pass
 
-class tb_test(pyverilator_wrapper):
+class tb_test(dut_wrapper):
+
+    def __init__(self, **kwargs):
+        dut_wrapper.__init__(self, **kwargs)
+
+        self.reset_release()
 
     def test_read_regs(self):
 
@@ -189,7 +159,7 @@ def pyverilate(dump_en = False):
 
     args = ["-Wno-TIMESCALEMOD", "-Wno-WIDTH", '--timescale-override', '1ns/1ns']
     tb = tb_test(fname = topfname,
-                verilog_path = SRC_DIR_LIST+INC_DIR_LIST,
+                src_dirs= SRC_DIR_LIST+INC_DIR_LIST,
                 command_args = args,
                 dump_en=dump_en)
 
