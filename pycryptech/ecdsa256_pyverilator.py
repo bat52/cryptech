@@ -1,7 +1,6 @@
 #!/usr/bin/env python3
 
 import os
-import shutil
 import ast
 import random
 from pyeda.pyverilator import pyverilator_wrapper
