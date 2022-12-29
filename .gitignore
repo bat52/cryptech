@@ -8,3 +8,5 @@ pycryptech/build/*
 siliconcompiler/example/build/*
 *.zip
 *.o
+*.vpi
+*.out
