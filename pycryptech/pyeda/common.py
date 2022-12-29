@@ -65,10 +65,14 @@ def get_remote_files(url,flist=[],dstdir='./work_get'):
             dst = os.path.join(dstdir,f)
             # print(src)
             # print(dst)
-            wget.download( src , dst )
+            if not(os.path.isfile(dst)):
+                wget.download( src , dst )
     else:
-        # single file            
+        # single file
         wget.download( url , dstdir )
+        fext = os.path.splitext(url)[1]
+        if fext == '.zip':
+            os.system('cd %s && dtrx -f `ls *.zip && cd ..`' % dstdir)
 
 def vcd_view(fname,savefname='',options=''):
     if os.path.isfile(savefname):
@@ -80,10 +84,12 @@ def vcd_view(fname,savefname='',options=''):
     os.system(cmdstr)
     pass
 
-def get_clean_work(tool='',makedir=False):
+def get_clean_work(tool='',makedir=False,rm_en=True):
     work_root = os.path.join(os.getcwd() , 'work_' + tool)    
-    # delete work directory
-    shutil.rmtree(work_root,ignore_errors=True)
+
+    if rm_en:
+        # delete work directory
+        shutil.rmtree(work_root,ignore_errors=True)
     
     if makedir:
         os.makedirs(work_root)

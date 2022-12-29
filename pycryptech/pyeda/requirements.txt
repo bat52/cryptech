@@ -2,3 +2,4 @@ shutil
 wget
 edalize
 pyverilator
+dtrx
