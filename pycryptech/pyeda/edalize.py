@@ -3,6 +3,7 @@
 import os
 from edalize import *
 from pyeda.common import get_source_files_alldir, vcd_view, get_inc_list, get_clean_work
+from pyeda.icarus import myhdl_vpi
 
 def eda_get_files(dirlist,work_root,fmts=['.v','.sv','.vh'],print_en=False) -> list:
     fnames = get_source_files_alldir(dirlist,fmts=fmts)
@@ -27,6 +28,9 @@ def eda_get_files(dirlist,work_root,fmts=['.v','.sv','.vh'],print_en=False) -> l
         elif fext in ['.c','.cpp','.h']:
             f = {'name' : os.path.relpath(fname, work_root),
             'file_type' : 'cSource'}
+        elif fext in ['.vpi']:
+            f = {'name' : os.path.relpath(fname, work_root),
+            'file_type' : 'vpiExe'}
         else:
             print('unknown file extension for file %s !!!' % fname)
             f = {'name' : os.path.relpath(fname, work_root),
@@ -36,7 +40,8 @@ def eda_get_files(dirlist,work_root,fmts=['.v','.sv','.vh'],print_en=False) -> l
 
     return files
 
-def icarus(simname='', top='', src_dirs = [], inc_dirs = [], dump_en = True) -> None:
+def icarus(simname='', top='', src_dirs = [], inc_dirs = [], 
+           dump_en = True, run_en = True, myhdl_en = False) -> None:
     # tool
     tool = 'icarus'
     work_root = get_clean_work(tool,True)
@@ -49,8 +54,12 @@ def icarus(simname='', top='', src_dirs = [], inc_dirs = [], dump_en = True) -> 
             '-DDUMP_MODULE=%s' % top
             ]
 
+    if myhdl_en:
+        mvpi = myhdl_vpi()
+        src_dirs += [mvpi.work]
+
     # get design files
-    files = eda_get_files(src_dirs, work_root, fmts=['.v'])
+    files = eda_get_files(src_dirs, work_root, fmts=['.v','.vpi'])
 
     # get include directories
     options = iverilog_options + get_inc_list(inc_dirs,work_root)
@@ -70,15 +79,17 @@ def icarus(simname='', top='', src_dirs = [], inc_dirs = [], dump_en = True) -> 
 
     backend = get_edatool(tool)(edam=edam,
                                 work_root=work_root)
-
-    # os.makedirs(work_root)
+    
     backend.configure()
     backend.build()
-    backend.run()
 
-    if dump_en:
-        dump_file = 'dump.vcd'
-        vcd_view(os.path.join(work_root, dump_file))
+    if run_en:
+        backend.run()
+        if dump_en:
+            dump_file = 'dump.vcd'
+            vcd_view(os.path.join(work_root, dump_file))
+
+    return backend
 
 def verilator(simname='', top='', src_dir=[], inc_dir = [], 
               options = [],
