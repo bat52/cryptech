@@ -7,3 +7,4 @@ pycryptech/build/*
 *.fst
 siliconcompiler/example/build/*
 *.zip
+*.o

@@ -3,6 +3,9 @@
 import os
 import shutil
 
+def list2str(l,sep=' '):
+    return sep.join(str(s) for s in l)
+
 def get_source_files_alldir(dirlist,fmts=['.v','.sv','.vh']) -> list:
     files = []
     # create files list
@@ -12,6 +15,7 @@ def get_source_files_alldir(dirlist,fmts=['.v','.sv','.vh']) -> list:
     return files
 
 def get_source_files(directory,fmts=['.v','.sv','.vh']) -> list:
+    # print(directory)
     flist = os.listdir(directory)
 
     foutlist = []
@@ -48,6 +52,23 @@ def get_inc_list(inclist,work_root='',prefix='-I') -> list:
 
     return outlist
     pass
+
+def get_remote_files(url,flist=[],dstdir='./work_get'):
+    import wget
+
+    if not(os.path.isdir(dstdir)):
+        os.makedirs(dstdir)
+
+    if len(flist)>0:
+        for f in flist:
+            src = os.path.join(url   ,f)
+            dst = os.path.join(dstdir,f)
+            # print(src)
+            # print(dst)
+            wget.download( src , dst )
+    else:
+        # single file            
+        wget.download( url , dstdir )
 
 def vcd_view(fname,savefname='',options=''):
     if os.path.isfile(savefname):
