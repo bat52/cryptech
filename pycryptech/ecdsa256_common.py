@@ -18,12 +18,10 @@ INC_DIR_LIST = [
 
 TB_DIR_LIST = [    
     '../cryptech/cryptech_ecdsa256/bench',
-    '../icarus/src'
 ]
 
 TB_INC_LIST = [    
     '../cryptech/cryptech_ecdsa256/bench',
-    '../icarus/inc'
 ]
 
 TB_VERILATOR_LIST = [    

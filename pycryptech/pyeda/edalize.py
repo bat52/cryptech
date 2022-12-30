@@ -3,7 +3,7 @@
 import os
 from edalize import *
 from pyeda.common import get_source_files_alldir, vcd_view, get_inc_list, get_clean_work
-from pyeda.icarus import myhdl_vpi
+from pyeda.icarus import myhdl_vpi, fst_vpi
 
 def eda_get_files(dirlist,work_root,fmts=['.v','.sv','.vh'],print_en=False) -> list:
     fnames = get_source_files_alldir(dirlist,fmts=fmts)
@@ -30,7 +30,7 @@ def eda_get_files(dirlist,work_root,fmts=['.v','.sv','.vh'],print_en=False) -> l
             'file_type' : 'cSource'}
         elif fext in ['.vpi']:
             f = {'name' : os.path.relpath(fname, work_root),
-            'file_type' : 'vpiExe'}
+            'file_type' : 'verilogSource'}
         else:
             print('unknown file extension for file %s !!!' % fname)
             f = {'name' : os.path.relpath(fname, work_root),
@@ -41,22 +41,36 @@ def eda_get_files(dirlist,work_root,fmts=['.v','.sv','.vh'],print_en=False) -> l
     return files
 
 def icarus(simname='', top='', src_dirs = [], inc_dirs = [], 
-           dump_en = True, run_en = True, myhdl_en = False) -> None:
+           dump_en = True, dump_fst_vpi = False, run_en = True, myhdl_en = False) -> None:
+    
+    inc_dirs = inc_dirs + [ os.path.join(os.path.dirname(__file__), 'icarus/inc') ]
+    src_dirs = src_dirs + [ os.path.join(os.path.dirname(__file__), 'icarus/src') ]
+
     # tool
     tool = 'icarus'
     work_root = get_clean_work(tool,True)
 
     iverilog_options = []
     if dump_en:
-        iverilog_options = iverilog_options + [
+        iverilog_options += [
             '-DDUMP_EN', 
             '-DDUMP_LEVEL=0', 
             '-DDUMP_MODULE=%s' % top
             ]
+        if dump_fst_vpi:
+            iverilog_options += ['-DDUMP_FST_VPI']
 
     if myhdl_en:
         mvpi = myhdl_vpi()
         src_dirs += [mvpi.work]
+
+    # this is only for fstdumper-vpi, but fst saving 
+    # is enabled by default when using icarus with edalize
+    if dump_en and dump_fst_vpi:
+        fvpi = fst_vpi()
+        vvp_options = ['-mfstdumper.so', '-M%s' % fvpi.work ]
+    else:
+        vvp_options = []
 
     # get design files
     files = eda_get_files(src_dirs, work_root, fmts=['.v','.vpi'])
@@ -67,6 +81,7 @@ def icarus(simname='', top='', src_dirs = [], inc_dirs = [],
         tool :
             {
             'iverilog_options'  : options,
+            'vvp_options'       : vvp_options 
         }
     }
 
@@ -86,7 +101,10 @@ def icarus(simname='', top='', src_dirs = [], inc_dirs = [],
     if run_en:
         backend.run()
         if dump_en:
-            dump_file = 'dump.vcd'
+            if dump_fst_vpi:
+                dump_file = 'dump.fst'
+            else:
+                dump_file = 'dump.vcd'
             vcd_view(os.path.join(work_root, dump_file))
 
     return backend
