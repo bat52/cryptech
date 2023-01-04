@@ -3,9 +3,15 @@
 import argparse
 import time
 
-from ecdsa256_edalize import simulate, verilate, synth_trellis, synth_yosys_edalize
-from ecdsa256_yosys import synth_yosys
-from ecdsa256_pyverilator import pyverilate
+'''
+import sys
+import os
+sys.path.append( os.path.abspath(os.path.join(os.path.dirname(__file__), '..') ))
+'''
+
+from ecdsa256.edalize import simulate, verilate, synth_trellis, synth_yosys_edalize
+from ecdsa256.yosys import synth_yosys
+from ecdsa256.pyverilator import pyverilate
 
 def cli(argv=[]):
     parser = argparse.ArgumentParser(description='ECDSA256 Command Line Interface')

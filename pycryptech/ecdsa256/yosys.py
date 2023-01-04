@@ -1,7 +1,6 @@
 #!/usr/bin/env python3
 
-import os
-from ecdsa256_common import *
+from ecdsa256.common import *
 from pyeda.yosys import yosys
 
 def synth_yosys() -> None:

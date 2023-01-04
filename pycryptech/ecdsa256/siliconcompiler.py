@@ -4,7 +4,7 @@ import os
 import sys
 import argparse
 import siliconcompiler as sc                      
-from ecdsa256_common import *
+from ecdsa256.common import *
 from pyeda.common import get_source_files_alldir
 
 def sc_path():

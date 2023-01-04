@@ -2,7 +2,7 @@
 
 import os
 from pyeda.myhdl import myhdl_wrapper
-from ecdsa256_common import *
+from ecdsa256.common import *
 
 def myhdl_main():
     # myhdl_cosim_dut(TOPLEVEL)

@@ -5,8 +5,8 @@ import ast
 import random
 from pyeda.pyverilator import pyverilator_wrapper
 
-from ecdsa256_common import *
-from ecdsa256_tc import *
+from ecdsa256.common import *
+from ecdsa256.tc import *
 
 ECDSA256_NCYCLES_TIMEOUT=1e6
 

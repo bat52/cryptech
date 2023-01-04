@@ -3,7 +3,7 @@
 import argparse
 import time
 from pyeda.edalize import *
-from ecdsa256_common import *
+from ecdsa256.common import *
 
 def simulate(dump_en = True) -> None:
     icarus(
