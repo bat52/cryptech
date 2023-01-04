@@ -12,6 +12,7 @@ sys.path.append( os.path.abspath(os.path.join(os.path.dirname(__file__), '..') )
 from ecdsa256.edalize import simulate, verilate, synth_trellis, synth_yosys_edalize
 from ecdsa256.yosys import synth_yosys
 from ecdsa256.pyverilator import pyverilate
+from ecdsa256.myhdl import myhdl_main
 
 def cli(argv=[]):
     parser = argparse.ArgumentParser(description='ECDSA256 Command Line Interface')
@@ -19,7 +20,7 @@ def cli(argv=[]):
     
     # edalize
     parser.add_argument("-sim",          "--simulate"     , help="Simulate ", type=str, 
-                        choices=['iverilog', 'pyverilator', 'verilator',''], default ='')
+                        choices=['iverilog','icarus', 'pyverilator', 'verilator','myhdl',''], default ='')
 
     # simulation options
     parser.add_argument("-den",          "--dump_en"      , help="Dump waveforms in simulation.", action='store_true' )
@@ -37,12 +38,14 @@ def main(argv=[]):
     start_time = time.time()
 
     # simulation
-    if p.simulate=='iverilog':
+    if p.simulate in ['icarus','iverilog']:
         simulate(dump_en=p.dump_en)
     elif p.simulate=='verilator':
         verilate(dump_en=p.dump_en)
     elif p.simulate=='pyverilator':
         pyverilate(dump_en=p.dump_en)
+    elif p.simulate=='myhdl':
+        myhdl_main(dump_en=p.dump_en)
     
     # synthesis
     if p.synth=='yosys':

@@ -2,11 +2,11 @@
 
 import os
 from pyeda.edalize import icarus
-from pyeda.common import get_clean_work
+from pyeda.common import get_clean_work, vcd_view
 import veriloggen as vg
 from myhdl import *
 
-def top2wrapper(topfile, topmodule,  filename='dut_wrapper.v'):
+def top2wrapper(topfile, topmodule,  filename='dut_wrapper.v', dump_en = False):
 
     modules = vg.from_verilog.read_verilog_module(topfile)
     top = modules[topmodule]   # dut real instance
@@ -15,6 +15,7 @@ def top2wrapper(topfile, topmodule,  filename='dut_wrapper.v'):
 
     m = vg.Module(wrapper_name) # dut wrapper instance
     d = vg.StubModule(top.name) # dut stub instance
+    dump = vg.StubModule('dump') # dumper module
 
     instlist = {}
     input_list = {}
@@ -41,6 +42,9 @@ def top2wrapper(topfile, topmodule,  filename='dut_wrapper.v'):
     print(ports)
     dut = m.Instance(d, 'dut', ports=ports)
 
+    if dump_en:
+        dump_i = m.Instance(dump, 'localdump')
+
     m.to_verilog(filename=filename)
     return wrapper_name
 
@@ -58,13 +62,13 @@ def top2signals(topfile='', topmodule=''):
 
     return slist
 
-def cosim_make_stub(topfile='',topmodule='',filename='dut_wrapper.v'):
+def cosim_make_stub(topfile='',topmodule='',filename='dut_wrapper.v', dump_en=False):
 
     tool = 'myhdl'
     work = get_clean_work(tool=tool,makedir=True)
     full_file = os.path.join(work,filename)
 
-    wrapper = top2wrapper(topfile=topfile, topmodule=topmodule, filename=full_file)
+    wrapper = top2wrapper(topfile=topfile, topmodule=topmodule, filename=full_file, dump_en=dump_en)
 
     return work, wrapper #, full_file
 
@@ -77,7 +81,7 @@ def cosimulation(vpi_path='./work_myhdl_vpi', vpi='myhdl', dut='', work='./work_
 
 def myhdl_cosim_dut(topmodule='', topfile='',dump_en=False, ports={},
     simname ='', src_dirs=[],inc_dirs=[]):
-    work, wrapper = cosim_make_stub(topfile=topfile,topmodule=topmodule)
+    work, wrapper = cosim_make_stub(topfile=topfile,topmodule=topmodule, dump_en=dump_en)
 
     # build dut
     print('##### Building icarus...')
@@ -92,9 +96,10 @@ def myhdl_cosim_dut(topmodule='', topfile='',dump_en=False, ports={},
     print('##### Building icarus... Done')
 
     # cosimulation
-    return cosimulation(vpi_path=icarus_inst['mvpi'].work, 
+    return [ cosimulation(vpi_path=icarus_inst['mvpi'].work, 
                         work=icarus_inst['work_root'],
-                        dut=simname, ports=ports)
+                        dut=simname, ports=ports),
+            icarus_inst['work_root']]
 
 @block
 def clk_driver(clk, period=10):
@@ -108,12 +113,12 @@ def myhdl_cosim_tb(topfile='',topmodule='',simname='',src_dirs=[], inc_dirs=[],d
     clock='clk'):
 
     ports = top2signals(topfile=topfile, topmodule=topmodule)
-    dut = myhdl_cosim_dut(topfile=topfile, topmodule=topmodule, ports=ports,
+    dut,work = myhdl_cosim_dut(topfile=topfile, topmodule=topmodule, ports=ports,
         simname=simname,src_dirs=src_dirs,inc_dirs=inc_dirs, dump_en=dump_en)
 
     clk_driver_i = clk_driver(ports[clock])
 
-    return {'sim': instances(), 'io': ports }
+    return {'sim': instances(), 'io': ports, 'work': work }
     # return instances()
 
 class myhdl_wrapper(object):
@@ -122,7 +127,7 @@ class myhdl_wrapper(object):
     clock = 'clk'
     reset = 'resetn'
 
-    def __init__(self, fname='', src_dirs=[], inc_dirs=[], simname='', dump_en = False):
+    def __init__(self, fname='', src_dirs=[], inc_dirs=[], simname='', dump_en = False, duration=200):
         topmodule,ext = os.path.splitext(os.path.basename(fname))
 
         tb = myhdl_cosim_tb(topfile=fname, topmodule=topmodule, simname=simname,
@@ -131,10 +136,9 @@ class myhdl_wrapper(object):
         self.sim = Simulation( tb['sim'] )        
         self.io  = tb['io']
 
-        # self.sim = Simulation( tb )
-        pass
-
-    def run(self,duration=200):
+        #### run simulation
         self.sim.run(duration)
+        if dump_en:
+            vcd_view(os.path.join(tb['work'], 'dump.vcd'))
         pass
 
