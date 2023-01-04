@@ -11,3 +11,9 @@ siliconcompiler/example/build/*
 *.vpi
 *.out
 pycryptech/parsetab.py
+myhdl/examples/bin2gray/vpi/Makefile
+myhdl/examples/bin2gray/vpi/myhdl_table.c
+myhdl/examples/bin2gray/vpi/myhdl.c
+myhdl/examples/bin2gray/bin2gray
+myhdl/examples/bin2gray/tb_bin2gray.v
+myhdl/examples/cosim_counter/counter
