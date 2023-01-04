@@ -9,4 +9,4 @@ module dump;
             $fstDumpvars(`DUMP_LEVEL,`DUMP_MODULE);
         `endif
     end
-endmodule
+endmodule/

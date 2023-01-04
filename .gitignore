@@ -10,3 +10,4 @@ siliconcompiler/example/build/*
 *.o
 *.vpi
 *.out
+pycryptech/parsetab.py

@@ -43,15 +43,15 @@ def eda_get_files(dirlist,work_root,fmts=['.v','.sv','.vh'],print_en=False) -> l
 def icarus(simname='', top='', src_dirs = [], inc_dirs = [], 
            dump_en = True, dump_fst_vpi = False, run_en = True, myhdl_en = False) -> None:
     
-    inc_dirs = inc_dirs + [ os.path.join(os.path.dirname(__file__), 'icarus/inc') ]
-    src_dirs = src_dirs + [ os.path.join(os.path.dirname(__file__), 'icarus/src') ]
-
     # tool
     tool = 'icarus'
     work_root = get_clean_work(tool,True)
 
     iverilog_options = []
     if dump_en:
+        inc_dirs = inc_dirs + [ os.path.join(os.path.dirname(__file__), 'icarus/inc') ]
+        src_dirs = src_dirs + [ os.path.join(os.path.dirname(__file__), 'icarus/src') ]
+
         iverilog_options += [
             '-DDUMP_EN', 
             '-DDUMP_LEVEL=0', 
@@ -63,6 +63,8 @@ def icarus(simname='', top='', src_dirs = [], inc_dirs = [],
     if myhdl_en:
         mvpi = myhdl_vpi()
         src_dirs += [mvpi.work]
+    else:
+        mvpi = None
 
     # this is only for fstdumper-vpi, but fst saving 
     # is enabled by default when using icarus with edalize
@@ -107,7 +109,10 @@ def icarus(simname='', top='', src_dirs = [], inc_dirs = [],
                 dump_file = 'dump.vcd'
             vcd_view(os.path.join(work_root, dump_file))
 
-    return backend
+    return {'backend'   : backend,
+            'work_root' : work_root, 
+            'mvpi'      : mvpi
+            }
 
 def verilator(simname='', top='', src_dir=[], inc_dir = [], 
               options = [],
