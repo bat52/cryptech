@@ -139,6 +139,6 @@ class myhdl_wrapper(object):
         #### run simulation
         self.sim.run(duration)
         if dump_en:
-            vcd_view(os.path.join(tb['work'], 'dump.vcd'))
+            vcd_view(os.path.join(tb['work'], 'dump.vcd'),postcmd='&')
         pass
 
