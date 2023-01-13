@@ -1,0 +1,1 @@
+- test FSM view with yosys https://stackoverflow.com/questions/32645965/fsm-export-using-yosys
