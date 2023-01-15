@@ -39,7 +39,7 @@ def top2wrapper(topfile, topmodule,  filename='dut_wrapper.v', dump_en = False):
 
     # copy paras and ports
     ports = {**input_list,**output_list}
-    print(ports)
+    # print(ports)
     dut = m.Instance(d, 'dut', ports=ports)
 
     if dump_en:
@@ -121,24 +121,46 @@ def myhdl_cosim_tb(topfile='',topmodule='',simname='',src_dirs=[], inc_dirs=[],d
     return {'sim': instances(), 'io': ports, 'work': work }
     # return instances()
 
-class myhdl_wrapper(object):
-    sim = None
-    io = None
-    clock = 'clk'
-    reset = 'resetn'
+class myhdl_cosim_wrapper(object):
+    topfile=''
+    topmodule = ''
+    simname=''
+    src_dirs=[]
+    inc_dirs=[]
+    dump_en = True
+    duration = 10    
+    work = ''
 
-    def __init__(self, fname='', src_dirs=[], inc_dirs=[], simname='', dump_en = False, duration=200):
-        topmodule,ext = os.path.splitext(os.path.basename(fname))
+    def __init__(self, topfile='', topmodule='', src_dirs=[], inc_dirs=[], simname='', dump_en = False, duration=200):
+        self.topfile = topfile
+        self.topmodule=topmodule
+        self.simname = simname
+        self.src_dirs = src_dirs
+        self.inc_dirs = inc_dirs
+        self.dump_en = dump_en
+        self.duration = duration
 
-        tb = myhdl_cosim_tb(topfile=fname, topmodule=topmodule, simname=simname,
-                src_dirs=src_dirs, inc_dirs=inc_dirs, dump_en=dump_en) 
-
-        self.sim = Simulation( tb['sim'] )        
-        self.io  = tb['io']
-
-        #### run simulation
-        self.sim.run(duration)
-        if dump_en:
-            vcd_view(os.path.join(tb['work'], 'dump.vcd'),postcmd='&')
         pass
 
+    def dut_ports(self):
+        return top2signals(topfile=self.topfile, topmodule=self.topmodule)
+
+    def dut_instance(self, ports = {}):    
+        dut, self.work = myhdl_cosim_dut( topfile=self.topfile, 
+                                    topmodule=self.topmodule, 
+                                    ports=ports,
+                                    simname=self.simname,
+                                    src_dirs=self.src_dirs,
+                                    inc_dirs=self.inc_dirs, 
+                                    dump_en=self.dump_en)
+        return dut
+
+    def sim_cfg(self,tb):
+        self.sim = Simulation( tb )
+
+    def sim_run(self,duration=0):
+        self.sim.run(duration)
+
+    def sim_view(self):
+        if self.dump_en:
+            vcd_view(os.path.join(self.work, 'dump.vcd'),postcmd='&')
