@@ -109,18 +109,6 @@ def clk_driver(clk, period=10):
         clk.next = not clk
     return driver
 
-def myhdl_cosim_tb(topfile='',topmodule='',simname='',src_dirs=[], inc_dirs=[],dump_en=False,
-    clock='clk'):
-
-    ports = top2signals(topfile=topfile, topmodule=topmodule)
-    dut,work = myhdl_cosim_dut(topfile=topfile, topmodule=topmodule, ports=ports,
-        simname=simname,src_dirs=src_dirs,inc_dirs=inc_dirs, dump_en=dump_en)
-
-    clk_driver_i = clk_driver(ports[clock])
-
-    return {'sim': instances(), 'io': ports, 'work': work }
-    # return instances()
-
 class myhdl_cosim_wrapper(object):
     topfile=''
     topmodule = ''
