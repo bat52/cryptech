@@ -3,7 +3,7 @@
 import os
 import ast
 import random
-from pyeda.pyverilator import pyverilator_wrapper
+from pueda.pyverilator import pyverilator_wrapper
 
 from ecdsa256.common import *
 from ecdsa256.tc import *

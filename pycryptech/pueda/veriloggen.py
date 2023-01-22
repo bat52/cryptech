@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 
 import veriloggen as vg
-from pyeda.common import get_source_files_alldir
+from pueda.common import get_source_files_alldir
 
 def sim(top='', src_dirs = [], inc_dirs = []):
     allfiles=get_source_files_alldir(src_dirs+inc_dirs)

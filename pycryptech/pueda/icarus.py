@@ -4,7 +4,7 @@ import os
 import sys
 sys.path.append( os.path.join(os.path.dirname(__file__), '..') )
 
-from pyeda.common import get_source_files_alldir, get_remote_files, get_clean_work, list2str, get_inc_list
+from pueda.common import get_source_files_alldir, get_remote_files, get_clean_work, list2str, get_inc_list
 
 def vpi_make(src_dirs=['./'], inc_dirs=[], args = []):
     # print(src_dirs)

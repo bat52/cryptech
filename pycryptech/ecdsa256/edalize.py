@@ -2,7 +2,7 @@
 
 import argparse
 import time
-from pyeda.edalize import *
+from pueda.edalize import *
 from ecdsa256.common import *
 
 def simulate(dump_en = True) -> None:

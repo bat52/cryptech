@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 
 from ecdsa256.common import *
-from pyeda.veriloggen import sim
+from pueda.veriloggen import sim
 
 def vg_sim():
     sim(top=TOPLEVEL,

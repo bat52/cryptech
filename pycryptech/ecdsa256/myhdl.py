@@ -2,7 +2,7 @@
 
 import os
 from myhdl import *
-from pyeda.myhdl import myhdl_cosim_wrapper, clk_driver
+from pueda.myhdl import myhdl_cosim_wrapper, clk_driver
 from ecdsa256.common import *
 
 @block

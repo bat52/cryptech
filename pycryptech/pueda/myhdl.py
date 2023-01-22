@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 
 import os
-from pyeda.edalize import icarus
-from pyeda.common import get_clean_work, vcd_view
+from pueda.edalize import icarus
+from pueda.common import get_clean_work, vcd_view
 import veriloggen as vg
 from myhdl import *
 

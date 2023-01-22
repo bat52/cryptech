@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 
 from ecdsa256.common import *
-from pyeda.yosys import yosys
+from pueda.yosys import yosys
 
 def synth_yosys() -> None:
     yosys( top=TOPLEVEL,

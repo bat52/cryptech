@@ -2,7 +2,7 @@
 #!/usr/bin/python3
 
 import os
-from pyeda.common import get_source_files_alldir, get_inc_list, get_clean_work, write_file_lines
+from pueda.common import get_source_files_alldir, get_inc_list, get_clean_work, write_file_lines
 
 def yosys(top='', src_dirs = [], inc_dirs = [], synth_en=True) -> None:
 
