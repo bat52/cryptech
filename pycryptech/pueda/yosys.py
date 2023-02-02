@@ -20,6 +20,7 @@ def yosys(top='', src_dirs = [], inc_dirs = [], synth_en=True) -> None:
     if synth_en:
         if True:
             lines += ['synth']
+            lines += ['abc -g cmos2','stat']
         else:
             lines += ['synth_ice40']
         lines.append('write_verilog %s_synth.v' % os.path.join(work_root,top))
