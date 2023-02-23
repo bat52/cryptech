@@ -30,14 +30,14 @@ def synth_trellis() -> None:
 
     trellis(simname=SIMNAME,
             top=TOPLEVEL,
-            src_dir = SRC_DIR_LIST+INC_DIR_LIST,
+            src_dir = SRC_DIR_LIST,
             inc_dir = INC_DIR_LIST)
 
 def synth_yosys_edalize() -> None:
 
-    yosys(simname=SIMNAME,
+    yosys_edalize(simname=SIMNAME,
           top=TOPLEVEL,
-          src_dir=SRC_DIR_LIST+INC_DIR_LIST,
+          src_dir=SRC_DIR_LIST,
           inc_dir=INC_DIR_LIST)
 
 def edalize_cli(argv=[]):
