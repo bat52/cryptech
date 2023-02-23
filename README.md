@@ -7,9 +7,9 @@ Currently testbench simulations work using:
 - [pyverilator](https://pypi.org/project/PyVerilator/): note this requires some [minor fixes](https://github.com/csail-csg/pyverilator/issues/16) that are not available in the pyverilator version published through pypi.
 - verilator through edalize
 
-Currently synthesys and gate count work using [yosys](https://yosyshq.net/yosys/).
-
-Initial work to support synthesis through edalize with [trellis](https://github.com/YosysHQ/prjtrellis), [yosys](https://yosyshq.net/yosys/) and [siliconcompiler](https://www.siliconcompiler.com/) has been done, but [does not work](https://github.com/siliconcompiler/siliconcompiler/discussions/1179) yet.
+Currently synthesys and gate count work using [yosys](https://yosyshq.net/yosys/) standalone and with edalize.
+Possibly [trellis](https://github.com/YosysHQ/prjtrellis), works too but the full flow has not been tested yet.
+Initial work to support [siliconcompiler](https://www.siliconcompiler.com/) has been done, but [does not work](https://github.com/siliconcompiler/siliconcompiler/discussions/1179) yet.
 
 # usage
 
