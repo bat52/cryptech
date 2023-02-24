@@ -19,5 +19,5 @@ Initial work to support [siliconcompiler](https://www.siliconcompiler.com/) has 
     ./ecdsa256_main.py -sim pyverilator # simulation with pyverilator
     ./ecdsa256_main.py -sim verilator   # simulation with verilator
     ./ecdsa256_main.py -synth yosys     # synthesis with yosys
-    ./ecdsa256_siliconcompiler.py  # backend flow with siliconcompiler (not working yet)
+    ./ecdsa256_main.py -synth sc        # backend flow with siliconcompiler (not working yet)
   
