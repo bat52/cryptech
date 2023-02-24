@@ -31,14 +31,23 @@ def sc_cli(argv=[]):
     p = parser.parse_args(argv)
     return p    
 
-def sc_main(remote_en = False, width = 1500, height=1500):
+def sc_main(src_dir = SRC_DIR_LIST, 
+            inc_dir = INC_DIR_LIST,  
+            constraints = CONSTRAINTS,
+            remote_en = False, 
+            width = 1500, height=1500, target='freepdk45_demo'):
     #sc_setenv()
 
     chip = sc.Chip(TOPLEVEL)                      # create chip object
-    chip.set('input', 'verilog', get_source_files_alldir(SRC_DIR_LIST + INC_DIR_LIST))  # define list of source files
-    chip.set('option','idir', INC_DIR_LIST)
-    chip.set('input', 'sdc', CONSTRAINTS)         # set constraints file
-    chip.load_target('freepdk45_demo')            # load predefined target
+
+    files =  get_source_files_alldir(src_dir,fmts=['.v','.sv'])
+    files += get_source_files_alldir(inc_dir,fmts=['.vh','.svh'])
+    chip.set('input', 'verilog', files)  # define list of source files
+
+    chip.set('option','idir', inc_dir)
+
+    chip.set('input', 'sdc', constraints)         # set constraints file
+    chip.load_target(target)            # load predefined target
     chip.set('option', 'remote', remote_en)
 
     chip.set('asic', 'diearea', [(0,0), (width,height)])

@@ -13,6 +13,7 @@ from ecdsa256.edalize import simulate, verilate, synth_trellis, synth_yosys_edal
 from ecdsa256.yosys import synth_yosys
 from ecdsa256.pyverilator import pyverilate
 from ecdsa256.myhdl import myhdl_main
+from ecdsa256.siliconcompiler import sc_main
 
 def cli(argv=[]):
     parser = argparse.ArgumentParser(description='ECDSA256 Command Line Interface')
@@ -27,7 +28,7 @@ def cli(argv=[]):
 
     # bare tools    
     parser.add_argument("-synth",        "--synth"        , help="Synthesize", type=str,
-                        choices=['yosys','yosys_edalize','trellis',''], default ='')
+                        choices=['yosys','yosys_edalize','trellis','sc',''], default ='')
     
     p = parser.parse_args(argv)
     return p
@@ -54,6 +55,8 @@ def main(argv=[]):
         synth_yosys_edalize()
     elif p.synth=='trellis':
         synth_trellis()
+    elif p.synth=='sc':
+        sc_main(remote_en=True)
     
     end_time = time.time()
 
