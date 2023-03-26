@@ -1,4 +1,4 @@
 #!/usr/bin/env bash
 export SCPATH=../siliconcompiler/siliconcompiler
 rm -rf ./build
-./siliconcompiler.py $@
+./siliconcompiler_wrapper.py $@

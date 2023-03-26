@@ -13,7 +13,7 @@ from ecdsa256.edalize import simulate, verilate, synth_trellis, synth_yosys_edal
 from ecdsa256.yosys import synth_yosys
 from ecdsa256.pyverilator import pyverilate
 from ecdsa256.myhdl import myhdl_main
-from ecdsa256.siliconcompiler import sc_main
+from ecdsa256.siliconcompiler_wrapper import sc_main
 
 def cli(argv=[]):
     parser = argparse.ArgumentParser(description='ECDSA256 Command Line Interface')
