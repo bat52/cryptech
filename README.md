@@ -9,7 +9,7 @@ Currently testbench simulations work using:
 
 Currently synthesys and gate count work using [yosys](https://yosyshq.net/yosys/) standalone and with edalize.
 Possibly [trellis](https://github.com/YosysHQ/prjtrellis), works too but the full flow has not been tested yet.
-Initial work to support [siliconcompiler](https://www.siliconcompiler.com/) has been done, but [does not work](https://github.com/siliconcompiler/siliconcompiler/discussions/1179) yet.
+Initial work to support [siliconcompiler](https://www.siliconcompiler.com/) has been done, and seems to [work in remote mode](https://www.linkedin.com/feed/update/urn:li:activity:7044353070171869185?commentUrn=urn%3Ali%3Acomment%3A%28activity%3A7044353070171869185%2C7045769771736276992%29&dashCommentUrn=urn%3Ali%3Afsd_comment%3A%287045769771736276992%2Curn%3Ali%3Aactivity%3A7044353070171869185%29).
 
 # usage
 
