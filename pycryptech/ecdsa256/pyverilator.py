@@ -153,6 +153,9 @@ class tb_test(dut_wrapper):
         pass
 
 def pyverilate(dump_en = False):
+    """
+    Run simulation with pyverilator
+    """
     topfname = os.path.join(SRC_DIR_LIST[-1], TOPLEVEL+'.v')
     print(topfname)
 
@@ -167,26 +170,27 @@ def pyverilate(dump_en = False):
     if True:
         print("1. Q1 = d1 * G...")
         tb.test_ecdsa_point_mul(ECDSA_P256_NSA_TC1)
-        
+
         print("2. R = k * G...")
         tb.test_ecdsa_point_mul(ECDSA_P256_NSA_TC2)
-        
+
         print("3. Q2 = d2 * G...")
         tb.test_ecdsa_point_mul(ECDSA_P256_RANDOM)
-        
+
         print("4. O = n * G...")
         tb.test_ecdsa_point_mul(ECDSA_P256_O)
-        
+
         print("5. G = (n + 1) * G...")
         tb.test_ecdsa_point_mul(ECDSA_P256_G)
 
         print("6. H = 2 * G...")
         tb.test_ecdsa_point_mul(ECDSA_P256_H)
-        
+
         print("7. H = (n + 2) * G...")
         tb.test_ecdsa_point_mul(ECDSA_P256_H2)
 
-    pass
+    if dump_en:
+        tb.view_waves()
 
 if __name__ == '__main__':
     pyverilate()
