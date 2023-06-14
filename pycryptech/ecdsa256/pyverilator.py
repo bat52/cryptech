@@ -163,7 +163,9 @@ def pyverilate(dump_en = False):
     tb = tb_test(fname = topfname,
                 src_dirs= SRC_DIR_LIST+INC_DIR_LIST,
                 command_args = args,
-                dump_en=dump_en)
+                dump_en=dump_en,
+                dump_fst=False,
+                dump_level=1)
 
     tb.test_read_regs()
 
