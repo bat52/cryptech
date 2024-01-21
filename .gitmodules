@@ -25,6 +25,3 @@
 [submodule "siliconcompiler/siliconcompiler"]
 	path = siliconcompiler/siliconcompiler
 	url = https://github.com/siliconcompiler/siliconcompiler
-[submodule "pycryptech/pueda"]
-	path = pycryptech/pueda
-	url = https://github.com/bat52/pueda
