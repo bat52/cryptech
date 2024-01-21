@@ -2,8 +2,9 @@
 
 import argparse
 import time
-from pueda.edalize import *
+from pueda.edalize import icarus, verilator, get_dump_dirs
 from ecdsa256.common import *
+from pyverilator.verilator_tools import verilator_verilog_tb_ok
 
 def simulate(dump_en = True) -> None:
     icarus(
@@ -13,18 +14,36 @@ def simulate(dump_en = True) -> None:
         inc_dirs = INC_DIR_LIST + TB_INC_LIST,
         dump_en=dump_en)
 
-def verilate(dump_en = True, dump_fst = True) -> None:
+def verilate(dump_en = False, dump_fst = True) -> None:
 
-    verilator(simname=SIMNAME, 
-              top=TOPLEVEL, 
-              src_dir = SRC_DIR_LIST + TB_VERILATOR_LIST, 
-              inc_dir = INC_DIR_LIST + TB_INC_LIST, 
-              options = ['-Wno-WIDTH', # issues at assignment
-                         '-Wno-CASEINCOMPLETE', # These should probably be fixed
-                         '--timescale "1ns/1ns"',
-                         '--timescale-override "1ns/1ns"'],
-              dump_en = dump_en, dump_fst = dump_fst, 
-              gtkw='../verilator/tb.gtkw')        
+    if verilator_verilog_tb_ok():
+        print('verilator uses verilog testbench')
+        # tested with verilator 5.021
+        inc_dump_dir, src_dump_dir = get_dump_dirs()
+        verilator(simname=SIMNAME,
+                top=TBTOPLEVEL, 
+                src_dir = SRC_DIR_LIST + TB_DIR_LIST + src_dump_dir,
+                inc_dir = INC_DIR_LIST + TB_INC_LIST + inc_dump_dir,
+                options = ['-Wno-WIDTH', # issues at assignment
+                            '-Wno-CASEINCOMPLETE', # These should probably be fixed
+                            '--timescale "1ns/1ns"',
+                            '--timescale-override "1ns/1ns"',
+                            '--binary',
+                            f'-DDUMP_MODULE={TBTOPLEVEL}'],
+                dump_en = dump_en, dump_fst = dump_fst,
+                gtkw='../verilator/tb.gtkw')
+    else:
+        print('verilator uses c++ testbench')
+        verilator(simname=SIMNAME,
+                top=TOPLEVEL, 
+                src_dir = SRC_DIR_LIST + TB_VERILATOR_LIST, 
+                inc_dir = INC_DIR_LIST + TB_INC_LIST, 
+                options = ['-Wno-WIDTH', # issues at assignment
+                            '-Wno-CASEINCOMPLETE', # These should probably be fixed
+                            '--timescale "1ns/1ns"',
+                            '--timescale-override "1ns/1ns"'],
+                dump_en = dump_en, dump_fst = dump_fst, 
+                gtkw='../verilator/tb.gtkw')
 
 def synth_trellis() -> None:
 
@@ -83,4 +102,3 @@ def edalize_main(argv=[]):
 if __name__ == '__main__':    
     import sys
     edalize_main(sys.argv[1:])
-    pass
