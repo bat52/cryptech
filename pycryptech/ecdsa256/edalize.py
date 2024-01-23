@@ -14,7 +14,7 @@ def simulate(dump_en = True) -> None:
         inc_dirs = INC_DIR_LIST + TB_INC_LIST,
         dump_en=dump_en)
 
-def verilate(dump_en = False, dump_fst = True) -> None:
+def verilate(dump_en = False, dump_fst = False) -> None:
 
     if verilator_verilog_tb_ok():
         print('verilator uses verilog testbench')
@@ -29,7 +29,10 @@ def verilate(dump_en = False, dump_fst = True) -> None:
                             '--timescale "1ns/1ns"',
                             '--timescale-override "1ns/1ns"',
                             '--binary',
-                            f'-DDUMP_MODULE={TBTOPLEVEL}'],
+                            f'-DDUMP_MODULE={TBTOPLEVEL}',
+                            '--DDUMP_LEVEL=1',
+                            '--DDUMP_EN',
+                            '--DTRACE_DEBUG'],
                 dump_en = dump_en, dump_fst = dump_fst,
                 gtkw='../verilator/tb.gtkw')
     else:
