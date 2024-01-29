@@ -14,7 +14,7 @@ def simulate(dump_en = True) -> None:
         inc_dirs = INC_DIR_LIST + TB_INC_LIST,
         dump_en=dump_en)
 
-def verilate(dump_en = False, dump_fst = False) -> None:
+def verilate(dump_en = False, dump_fst = True) -> None:
 
     if verilator_verilog_tb_ok():
         print('verilator uses verilog testbench')
@@ -32,8 +32,10 @@ def verilate(dump_en = False, dump_fst = False) -> None:
                             f'-DDUMP_MODULE={TBTOPLEVEL}',
                             '--DDUMP_LEVEL=1',
                             '--DDUMP_EN',
-                            '--DTRACE_DEBUG'],
+                            '--DTRACE_DEBUG',
+                            '--DDUMP_FST'],
                 dump_en = dump_en, dump_fst = dump_fst,
+                plot_mode='gtkwave',
                 gtkw='../verilator/tb.gtkw')
     else:
         print('verilator uses c++ testbench')
@@ -46,6 +48,7 @@ def verilate(dump_en = False, dump_fst = False) -> None:
                             '--timescale "1ns/1ns"',
                             '--timescale-override "1ns/1ns"'],
                 dump_en = dump_en, dump_fst = dump_fst, 
+                plot_mode='gtkwave',
                 gtkw='../verilator/tb.gtkw')
 
 def synth_trellis() -> None:
