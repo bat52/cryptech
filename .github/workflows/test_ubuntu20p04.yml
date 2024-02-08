@@ -17,7 +17,7 @@ jobs:
     - name: Install dependencies
       run: |
         wget https://raw.githubusercontent.com/bat52/pueda/master/install_dependencies.sh
-        ./install_dependencies.sh
+        source ./install_dependencies.sh
     - name: tool versions
       run: | 
         iverilog -V | grep -n 1
