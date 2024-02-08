@@ -18,6 +18,7 @@ jobs:
       run: |
         wget https://raw.githubusercontent.com/bat52/pueda/master/install_dependencies.sh
         source ./install_dependencies.sh
+        pip3 install pueda
     - name: tool versions
       run: | 
         iverilog -V | grep -n 1
@@ -29,5 +30,5 @@ jobs:
     - name: test verilator
       run: |
         cd ./pycryptech
+        ls
         python /ecdsa256_main.py -sim verilator -den
-        python ./test.
