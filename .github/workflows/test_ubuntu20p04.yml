@@ -31,4 +31,4 @@ jobs:
       run: |
         cd ./pycryptech
         ls
-        python /ecdsa256_main.py -sim verilator -den
+        python ./ecdsa256_main.py -sim verilator -den
