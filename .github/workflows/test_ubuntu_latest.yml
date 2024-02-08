@@ -1,0 +1,56 @@
+name: TestUbuntu20p04
+
+on: [push]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ["3.10", "3.11"]
+    steps:
+    - uses: actions/checkout@v4
+    - name: Checkout submodules
+      run: git submodule update --init --recursive
+    - name: Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v5
+      with:
+        python-version: ${{ matrix.python-version }}
+    - name: Install dependencies
+      run: |
+        wget https://raw.githubusercontent.com/bat52/pueda/master/install_dependencies.sh
+        source ./install_dependencies.sh
+        pip3 install pueda
+    - name: tool versions
+      run: | 
+        iverilog -V | grep -n 1
+        verilator --version
+        yosys -V
+    - name: pip configuration report
+      run: |
+        pip list
+    - name: test icarus
+      run: |
+        cd ./pycryptech
+        python ./ecdsa256_main.py -sim iverilog -den
+        cd ..
+    - name: test myhdl
+      run: |
+        cd ./pycryptech
+        python ./ecdsa256_main.py -sim myhdl
+        cd ..
+    - name: test pyverilator
+      run: |
+        cd ./pycryptech
+        python ./ecdsa256_main.py -sim pyverilator
+        cd ..
+    - name: test verilator
+      run: |
+        cd ./pycryptech
+        python ./ecdsa256_main.py -sim verilator -den
+        cd ..
+    - name: test yosys
+      run: |
+        cd ./pycryptech
+        python ./ecdsa256_main.py -synth yosys
+        cd ..
