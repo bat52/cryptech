@@ -29,6 +29,6 @@ jobs:
         pip list
     - name: test verilator
       run: |
-        ls ./cryptech
+        ls ./cryptech/cryptech_lib
         cd ./pycryptech
         python ./ecdsa256_main.py -sim verilator -den
