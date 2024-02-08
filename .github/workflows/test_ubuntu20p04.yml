@@ -29,8 +29,28 @@ jobs:
     - name: pip configuration report
       run: |
         pip list
+    - name: test icarus
+      run: |
+        cd ./pycryptech
+        python ./ecdsa256_main.py -sim iverilog -den
+        cd ..
+    - name: test myhdl
+      run: |
+        cd ./pycryptech
+        python ./ecdsa256_main.py -sim myhdl
+        cd ..
+    - name: test pyverilator
+      run: |
+        cd ./pycryptech
+        python ./ecdsa256_main.py -sim pyverilator
+        cd ..
     - name: test verilator
       run: |
-        ls ./cryptech/cryptech_lib
         cd ./pycryptech
         python ./ecdsa256_main.py -sim verilator -den
+        cd ..
+    - name: test yosys
+      run: |
+        cd ./pycryptech
+        python ./ecdsa256_main.py -synth yosys
+        cd ..
