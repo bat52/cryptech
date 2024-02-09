@@ -32,7 +32,7 @@ jobs:
     - name: test icarus
       run: |
         cd ./pycryptech
-        python ./ecdsa256_main.py -sim iverilog -den
+        python ./ecdsa256_main.py -sim iverilog # -den
         cd ..
     - name: test myhdl
       run: |
