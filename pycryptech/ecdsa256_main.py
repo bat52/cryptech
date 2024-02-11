@@ -1,5 +1,7 @@
 #!/usr/bin/env python3
 
+""" cryptech ecdsa256 commands """
+
 import argparse
 import time
 
@@ -16,9 +18,10 @@ from ecdsa256.myhdl import myhdl_main
 from ecdsa256.siliconcompiler_wrapper import sc_main
 
 def cli(argv=[]):
+    """ cryptech ecdsa 256 main parser """
     parser = argparse.ArgumentParser(description='ECDSA256 Command Line Interface')
     # register format options
-    
+
     # edalize
     parser.add_argument("-sim",          "--simulate"     , help="Simulate ", type=str, 
                         choices=['iverilog','icarus', 'pyverilator', 'verilator','myhdl',''], default ='')
@@ -26,10 +29,10 @@ def cli(argv=[]):
     # simulation options
     parser.add_argument("-den",          "--dump_en"      , help="Dump waveforms in simulation.", action='store_true' )
 
-    # bare tools    
+    # bare tools
     parser.add_argument("-synth",        "--synth"        , help="Synthesize", type=str,
                         choices=['yosys','yosys_edalize','trellis','sc',''], default ='')
-    
+
     p = parser.parse_args(argv)
     return p
 
