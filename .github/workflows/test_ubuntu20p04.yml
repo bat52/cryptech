@@ -20,6 +20,7 @@ jobs:
       run: |
         wget https://raw.githubusercontent.com/bat52/pueda/master/install_dependencies.sh
         source ./install_dependencies.sh
+        pip3 install --upgrade pip
         pip3 install pueda
     - name: tool versions
       run: | 
@@ -32,7 +33,7 @@ jobs:
     - name: test icarus
       run: |
         cd ./pycryptech
-        python ./ecdsa256_main.py -sim iverilog -den
+        python ./ecdsa256_main.py -sim iverilog # -den
         cd ..
     - name: test myhdl
       run: |
